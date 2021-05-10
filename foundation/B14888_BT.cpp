@@ -14,6 +14,7 @@ vector<int> cal, num;
 void calculate(int res, int num_idx)
 {
     k++;
+    
 
     if (num_idx == N)
     {
