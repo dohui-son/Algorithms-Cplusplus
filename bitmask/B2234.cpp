@@ -1,55 +1,74 @@
 #include <bits/stdc++.h>
-using namespace std;   
-const int dy[] = {0, -1, 0, 1}; 
-const int dx[] = {-1, 0, 1, 0}; 
-int visited[51][51], a[51][51], cnt, compSize[2504], n, m, mx, big; 
-int dfs(int y, int x, int cnt){
-    if(visited[y][x]) return 0; 
-    visited[y][x] = cnt; 
-    int ret = 1; 
-    for(int i = 0; i < 4; i++){
-        if(!(a[y][x] & (1 << i))){
-            int ny = y + dy[i]; 
-            int nx = x + dx[i]; 
-            ret += dfs(ny, nx, cnt); 
-        } 
-    } 
-    return ret; 
+using namespace std;
+
+const int dy[4] = {0, -1,0,1};
+const int dx[4] = {-1,0,1,0};
+int n , m, cnt, widest,two, memo[2504], vis[51][51],g[51][51];
+
+
+int dfs(int y, int x, int num){
+    if(vis[y][x])return 0;
+    vis[y][x] = num;
+    int ret = 1;
+    for (int i = 0; i < 4; i++)
+    {
+
+        if(!(g[y][x] & 1<<i) ){
+            int ny = dy[i]+y;
+            int nx = dx[i]+x;
+            
+            ret +=dfs(ny,nx,num);
+            
+        }
+    }
+    return ret;
 }
+
 int main(){
+    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
     cin >> n >> m;
-    for(int i = 0; i < m; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j]; 
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> g[i][j];
         }
     }
-    for(int i = 0; i < m; i++){
-        for(int j = 0; j < n; j++){
-            if(!visited[i][j]){
-                cnt++; 
-                compSize[cnt] = dfs(i, j, cnt);  
-                mx = max(mx, compSize[cnt]);
-            } 
-        }
-    }
-    for(int i = 0; i < m; i++){
-        for(int j = 0; j < n; j++){
-            if(i + 1 < m){
-                int a = visited[i + 1][j]; 
-                int b = visited[i][j]; 
-                if(a != b){ 
-                    big = max(big, compSize[a] + compSize[b]); 
-                }
+    
+
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if(vis[i][j] == 0){
+                cnt++;
+                memo[cnt] = dfs(i,j,cnt);
+                widest = max(widest, memo[cnt]);
+               
             }
-            if(j + 1 < n){
-                int a = visited[i][j + 1]; 
-                int b = visited[i][j]; 
-                if(a != b){ 
-                    big = max(big, compSize[a] + compSize[b]); 
-                }
-            } 
-        } 
-    } 
-    cout << cnt << "\n" << mx << "\n" << big <<'\n'; 
+        }
+    }
+    
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if(i+1<m){
+                int a = vis[i+1][j];
+                int b = vis[i][j];
+                if(a!=b)two=max(two,memo[a]+memo[b]);
+            }
+            if(j+1<n){
+                int a = vis[i][j+1];
+                int b = vis[i][j];
+                if(a!=b)two=max(two,memo[a]+memo[b]);
+            }
+        }
+    }
+    
+    cout << cnt <<"\n" << widest<< "\n" << two <<endl;
+    
+
+
     return 0;
 }
