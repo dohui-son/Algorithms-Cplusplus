@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    ".prettierrc": "php",
     "iosfwd": "cpp",
     "vector": "cpp",
     "iostream": "cpp",
@@ -51,7 +52,8 @@
     "set": "cpp",
     "stack": "cpp",
     "string": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "random": "cpp"
   }
   
 }
