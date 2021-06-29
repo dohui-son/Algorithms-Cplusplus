@@ -1,3 +1,4 @@
+//일곱난쟁이 - 키 계산
 #include <bits/stdc++.h>
 #define endl "\n";
 using namespace std;
@@ -9,10 +10,10 @@ void go(int next)
 {
     if (v.size() == 7)
     {
-        int tmp = 0;
+        int summ = 0;
         for (int i = 0; i < 7; i++)
-            tmp += v[i];
-        if (tmp == 100)
+            summ += v[i];
+        if (summ == 100)
         {
             sort(v.begin(), v.end());
             for (int i = 0; i < 7; i++)
@@ -20,6 +21,7 @@ void go(int next)
             exit(0);
         }
     }
+
     for (int i = next; i < 9; i++)
     {
         v.push_back(h[i]);
