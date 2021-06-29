@@ -1,6 +1,47 @@
+#include <bits/stdc++.h>
+#define endl "\n";
+using namespace std;
 
+int h[9];
+vector<int> v;
 
-//dohui's solution
+void go(int next)
+{
+    if (v.size() == 7)
+    {
+        int tmp = 0;
+        for (int i = 0; i < 7; i++)
+            tmp += v[i];
+        if (tmp == 100)
+        {
+            sort(v.begin(), v.end());
+            for (int i = 0; i < 7; i++)
+                cout << v[i] << endl;
+            exit(0);
+        }
+    }
+    for (int i = next; i < 9; i++)
+    {
+        v.push_back(h[i]);
+        go(next + 1);
+        v.pop_back();
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    for (size_t i = 0; i < 9; i++)
+        cin >> h[i];
+    go(0);
+
+    return 0;
+}
+
+//dohui's solution - success
 
 // #include <bits/stdc++.h>
 // using namespace std;
