@@ -40,7 +40,22 @@ int main()
     //2차원 배열 초기화 : fill;
     for (size_t i = 0; i < 10; i++)
         fill(bb[i], bb[i] + 10, 0);
-    fill(&bb[0][0], &bb[0][0] + n * m, k);
+    //fill(&bb[0][0], &bb[0][0] + n * m, k);
+
+    int arr[10] = {
+        0,
+    };
+    for (int a : arr)
+        cout << a << " ";
+    auto a = find(arr, arr + 10, 100);
+    if (a == arr + 10)
+        cout << "not found";
+
+    fill(arr, arr + 10, 10);
+
+    unordered_map<string, int> umap;
+    umap.insert({"test1", 1});
+    umap["test1"] = 4;
 
     return 0;
 }
