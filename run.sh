@@ -11,7 +11,7 @@ if [ "$#" -eq 2 ]; then
     for FILE in inputs/*; do
         printf "${GREEN}${FILE}${NC}\n"
         ./a.out < $FILE;
-        printf "\n"
+        printf "\n" 
     done;
 else
     ./a.out;
