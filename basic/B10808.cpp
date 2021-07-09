@@ -22,6 +22,8 @@ int main()
     }
     for (auto mm : m)
         cout << mm.second << " ";
+    auto search = umap.find("test2");
+    if(search != umap.end())
 
     return 0;
 }

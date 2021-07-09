@@ -1,9 +1,15 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <tuple>
+#include <string>
 using namespace std;
 #define endl "\n";
 
 pair<int, int> p;
-tuple<int, int, int> tl;
+tuple<int, int, int> tl();
 int a, b, c;
 vector<int> v;
 
@@ -56,6 +62,10 @@ int main()
     unordered_map<string, int> umap;
     umap.insert({"test1", 1});
     umap["test1"] = 4;
+    // for (auto element : umap)
+    // {
+    //     cout
+    // }
 
     return 0;
 }
