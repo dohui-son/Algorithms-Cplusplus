@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+//*****아이디어가 잘 안떠오름****
 
 using namespace std;
 #define endl "\n";
