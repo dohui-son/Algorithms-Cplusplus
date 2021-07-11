@@ -3,8 +3,7 @@
 #include <algorithm>
 using namespace std;
 #define endl "\n";
-int n, s, e, ans;
-vector<pair<int64_t, int64_t> > v;
+int n, ans, x;
 
 int main()
 {
@@ -12,24 +11,25 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
     cin >> n;
+    vector<int> v(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> s >> e;
-        v.push_back({e, s});
+        cin >> v[i];
     }
-
+    cin >> x;
     sort(v.begin(), v.end());
-    s = v[0].first;
-    ans++;
-    for (int i = 1; i < n; i++)
+    int l = 0, r = n - 1;
+    while (l < r)
     {
-        if (v[i].second >= s)
+        if (v[l] + v[r] == x)
         {
-            ans++;
-            s = v[i].first;
+            ans++, r--;
         }
+        else if (v[l] + v[r] < x)
+            l++;
+        else
+            r--;
     }
-
     cout << ans;
 
     return 0;
