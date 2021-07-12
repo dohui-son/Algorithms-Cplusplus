@@ -1,26 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
-int k, n, a[104], visited[104], cnt;
+#define endl "\n";
 const int INF = 987654321;
+
+int k, n, a[104], visited[104], cnt;
 vector<int> v;
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
     cin >> k >> n;
     for (int i = 0; i < n; i++)
         cin >> a[i];
     for (int i = 0; i < n; i++)
     {
         if (!visited[a[i]])
-        {
+        { //지금 멀티탭에 안 꽂혀있음
             if (v.size() == k)
-            {
+            { //멀티탭 꽉 찼음
                 int last_idx = 0, pos;
                 for (int _a : v)
                 {
                     int here_pick = INF;
+
                     for (int j = i + 1; j < n; j++)
                     {
                         if (_a == a[j])
@@ -43,6 +51,6 @@ int main()
             visited[a[i]] = 1;
         }
     }
-    cout << cnt << "\n";
+    cout << cnt << endl;
     return 0;
 }
