@@ -14,15 +14,5 @@ int main()
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
 
-    cout << "Hello, World!" << endl;
-    int N;
-    cin >> N;
-    for (int i = 0; i < N; i++)
-    {
-        int tmp;
-        cin >> tmp;
-        cout << tmp << endl;
-    }
-
-    return 0;
+        return 0;
 }
