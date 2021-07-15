@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <tuple>
 #include <string>
+#include <set>
+#include <stack>
 
 using namespace std;
 #define endl "\n";
@@ -142,5 +144,105 @@ int main()
     for (int i : v)
         cout << "v " << i << endl;
 
+    int arr[10] = {
+        0,
+    };
+    auto auu = find(arr, arr + 10, 10);
+    if (auu == arr + 10)
+        cout << "not found" << endl;
+    fill(arr, arr + 10, 10);
+    auu = find(arr, arr + 10, 10);
+    if (auu == arr + 10)
+    {
+        cout << "not found" << endl;
+    }
+    else
+    {
+        cout << *auu << endl;
+    }
+
+    //fill(시작값, 끝값, 초기화할값);
+    //meset은 바이트로 초기화하기 때문에 0,-1로만 초기화가능함.....
+    int arr2[10][10];
+    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
+    cout << arr2[1][1] << endl;
+    unordered_map<string, int> umap;
+    umap["insert"] = 4; //입력하기
+    umap["insert"] = 7; //값 바꾸기
+    umap["insert"]++;
+    cout << umap["insert"] << endl;
+    cout << umap.size() << endl;
+    umap.erase("insert");
+    cout << umap.size() << endl;
+
+    map<string, int> m;                // 기본 오름차순
+    map<int, int, greater<int> > down; // 내림차순
+    m["map"]++;                        //처음에 입력하고 값 넣기
+    cout << "map : " << m["map"] << endl;
+    m["amap"] = 2;
+    for (auto i : m)
+        cout << "i.first   " << i.first << " i.second  " << i.second << endl;
+    bool b = m.erase("amap");
+    if (b)
+        cout << "erased" << endl;
+    auto search = m.find("amap");
+    if (search == m.end())
+        cout << "not found" << endl;
+    m.clear();
+    cout << m["amap"] << endl;
+    if (m.end() == m.find("map"))
+        cout << "erased all" << endl;
+    cout << "m.size()  " << m.size() << endl;
+
+    set<pair<string, int> > se;
+    //중복요소는 없고 오로지 유닉한 값만 저장 + 오름차순 자동정렬
+    set<int, greater<int> > set_less; //내림차순
+    se.insert({"set1", 1});
+    se.insert({"set2", 2});
+    se.insert({"set3", 3});
+    se.insert({"set3", 3});
+    se.insert({"set3", 4});
+    cout << "se.size()  " << se.size() << endl;
+    for (auto i : se)
+        cout << "se " << i.first << " " << i.second << endl;
+    auto set_a = se.find({"set1", 1});
+    if (set_a != se.end())
+        cout << "found" << endl;
+
+    multiset<int> ms; //오름차순 중복 가능
+    multiset<char> msc;
+    multiset<int, greater<int> > msdown; //내림차순
+    for (int i = 7; i > 0; i--)
+    {
+        ms.insert(i);
+        msc.insert((char)i + 65);
+        msdown.insert(i);
+    }
+    for (auto i : ms)
+        cout << "ms " << i << endl;
+    for (auto i : msc)
+        cout << "msc " << i << endl;
+    for (auto i : msdown)
+        cout << "msdown " << i << endl;
+
+    for (auto i = ms.begin(); i != ms.end(); i++)
+    {
+        cout << "*i  " << *i << "  ";
+    }
+    cout << endl;
+    auto multis = ms.find(90);
+    ms.erase(ms.begin(), multis);
+    cout << "size after erase : " << ms.size() << endl;
+    msc.erase(msc.begin());
+    cout << "size after - msc.erase(msc.begin());  " << msc.size() << endl;
+
+    stack<string> st;
+    st.push("hi");
+    st.push("  ");
+    while (st.size())
+    {
+        cout << st.top();
+        st.pop();
+    }
     return 0;
 }
