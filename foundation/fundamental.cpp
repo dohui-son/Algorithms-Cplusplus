@@ -7,12 +7,91 @@
 #include <string>
 #include <set>
 #include <stack>
+#include <queue>
 
 using namespace std;
 #define endl "\n";
 
+struct P //struct with custom sorting
+{
+    int y, x;
+    P(int y, int x) : y(y), x(x) {}
+    P()
+    {
+        y = -1;
+        x = -1;
+    }
+    bool operator<(const P &a) const
+    {
+        if (x == a.x)
+            return y < a.y;
+        return x < a.x;
+    }
+};
+struct percent //단순한 struct
+{
+    int x, y;
+    double w, d, l;
+} a[6]; //한정
+// cin >> a[0].x ; 이런식
+
+struct Point
+{ // priority queue에 int 외에 다른 구조체가 들어갈때
+    int y, x;
+    Point(int y, int x) : y(y), x(x) {}
+    Point()
+    {
+        y = -1;
+        x = -1;
+    }
+    bool operator<(const Point &p) const { return x > p.x; } //오름차순(x기준)
+};
+
+struct Ppoint //내림차순 (x기준)
+{
+    int y, x;
+};
+struct cmp
+{
+    bool operator()(Ppoint a, Ppoint b)
+    {
+        return a.x < b.x;
+    }
+};
+
+void b2(int &a);
+void b3(int *a);
+
 int main()
 {
+    priority_queue<Point> pq_struct;
+    pq_struct.push({1, 10});
+    pq_struct.push({2, 3});
+    pq_struct.push({4, 5});
+    pq_struct.push({6, 7});
+    cout << "pq_struct  " << pq_struct.top().x << endl; // 3 x기준 오름차순
+    cout << "pq_struct  " << pq_struct.top().y << endl; //2
+
+    priority_queue<Ppoint, vector<Ppoint>, cmp> pq; //내림차순
+    pq.push({1, 2});
+    pq.push({10, 1});
+    pq.push({11, 1});
+    pq.push({4, 5});
+    cout << "custom pq less " << pq.top().x << endl; //x기준
+    cout << "custom pq less " << pq.top().y << endl;
+
+    //prioirty queue ( 다익스트라, 그리디 )
+    priority_queue<int, vector<int>, greater<int> > pq_up;
+    //오름차순
+    priority_queue<int> pq_down; //내림차순
+    for (int i = 7; i > 0; i--)
+    {
+        pq_down.push(i);
+        cout << "pq_down  <greater<int>> " << pq_down.top() << endl;
+        pq_up.push(i);
+        cout << "pq_up default  " << pq_up.top() << endl;
+    }
+
     char s[10];
     string str = "wow fantastic";
     str += " ";
@@ -109,6 +188,10 @@ int main()
         cout << "not found" << endl;
     str.erase(str.begin(), str.begin() + 2);
     cout << str << endl;
+
+    string strr = "hello for the fine";
+    if (strr.find("hi") == string::npos)
+        cout << "string::npos" << endl;
 
     pair<int, int> pi;
     pi = {1, 2};
@@ -236,13 +319,83 @@ int main()
     msc.erase(msc.begin());
     cout << "size after - msc.erase(msc.begin());  " << msc.size() << endl;
 
-    stack<string> st;
+    stack<string> st; //괄호만들기, 짝찾기, "교차하지 않고"라는 문장
     st.push("hi");
     st.push("  ");
     while (st.size())
     {
-        cout << st.top();
+        cout << st.top() << endl;
         st.pop();
     }
+
+    queue<int> q;
+    q.push(1);
+    q.push(2);
+    cout << q.front() << endl;
+    q.pop();
+    cout << q.front() << endl;
+    cout << q.size() << endl;
+
+    deque<int> dq;
+    dq.push_back(1);
+    dq.push_front(3);
+    dq.push_front(4);
+    dq.push_back(0);
+    cout << dq.front() << endl;
+    cout << dq.back() << endl;
+    cout << dq.size() << endl;
+    dq.pop_front();
+    cout << dq.front() << endl;
+    dq.pop_back();
+    cout << dq.back() << endl;
+
+    vector<int> vv;
+    for (int i = 0; i < 10; i++)
+    {
+        vv.push_back(i);
+    }
+
+    cout << "before rotation  " << vv[0] << endl;
+    rotate(vv.begin(), vv.begin() + vv.size() - 1, vv.end()); //뒤로
+    cout << "rotation  " << vv[0] << endl;
+    rotate(vv.begin(), vv.begin() + 1, vv.end()); //앞으로
+    cout << "rotation  " << vv[0] << endl;
+
+    //n진법 (10 -> 2)
+    vv.clear();
+    cout << vv.size() << endl;
+    int nn = 100, bb = 2;
+    while (nn > 1)
+    {
+        vv.push_back(nn % bb);
+        nn /= bb;
+    }
+    if (nn == 1)
+        vv.push_back(1);
+    reverse(vv.begin(), vv.end());
+    cout << "10진법 에서 2진법 " << endl;
+    for (int aa : vv)
+    {
+        if (aa >= 10)
+        {
+            cout << char(aa + 55) << endl;
+        }
+        else
+        {
+            cout << aa;
+        }
+    }
+    cout << endl;
+    int cnt[3] = {7, 8, 9};
+
+    int numbers = 10;
+    b2(numbers);
+    cout << "b2(numbers)  " << numbers << endl;
+    b3(&numbers);
+    cout << numbers << endl;
+
     return 0;
 }
+
+void b2(int &a) { a = 2; }
+void b3(int *a) { *a = 3; }
