@@ -11,7 +11,6 @@
 
 using namespace std;
 #define endl "\n";
-
 struct P //struct with custom sorting
 {
     int y, x;
@@ -386,7 +385,107 @@ int main()
         }
     }
     cout << endl;
-    int cnt[3] = {7, 8, 9};
+
+    //정렬
+    int cnt[4] = {7, 8, 9, 1};
+    //bool comp(int a,int b){return a <= b;} 오름차순
+    //sort(cnt, cnt + 4, comp);
+    for (int i : cnt)
+        cout << "sort  " << i << endl;
+    sort(vv.begin(), vv.end(), greater<int>()); //내림차순
+
+    //실수 입력
+    int one = 1, two = 2, three = 3;
+    scanf("%d %d.%d", &one, &two, &three); //3 3.21받을때
+    double d = 1.23456789;
+    cout << d << endl;                          //1.23457
+    cout.precision(7);                          //정수부분+소수부분 해서 6자리까지 출력 ( 소수부분은 반올림 )
+    cout << "cout.precision(7)  " << d << endl; //1.234568
+
+    //소수점 6자리까지(반올림), 그리고 2를 02로 만들어서 출력
+    d = 1.23456789;
+    printf("%.6lf\n", d);  // 1.23458
+    printf("%02d\n", two); // 02
+
+    int ar[5] = {1, 2, 2, 3, 4};
+    v.clear();
+    for (int i = 0; i < 5; i++)
+        v.push_back(ar[i]);
+    int x = 2;
+    int cc = (int)(upper_bound(v.begin(), v.end(), x) - lower_bound(v.begin(), v.end(), x));
+    int f = (int)(lower_bound(v.begin(), v.end(), x) - v.begin());
+    int t = (int)(upper_bound(v.begin(), v.end(), x) - v.begin());
+    int f2 = *lower_bound(v.begin(), v.end(), x);
+    int t2 = *upper_bound(v.begin(), v.end(), x);
+
+    printf("%d 의 갯수 : %d, 시작되는 점: %d  끝나는 점: %d \n", x, cc, f, t);
+    printf("lower bound가 시작되는 점의 값 : %d, upper bound가 시작되는 점의 값 : %d\n", f2, t2);
+    cc = (int)(upper_bound(ar, ar + 5, x) - lower_bound(ar, ar + 5, x));
+    f = (int)(lower_bound(ar, ar + 5, x) - ar);
+    t = (int)(upper_bound(ar, ar + 5, x) - ar);
+    f2 = *lower_bound(ar, ar + 5, x);
+    t2 = *upper_bound(ar, ar + 5, x);
+    printf("%d의 갯수 : %d, 시작되는 점 : %d, 끝나는 점 : %d \n", x, c, f, t);
+    printf("lower bound가 시작되는 점의 값 : %d, upper bound가 시작되는 점의 값 : %d\n", f2, t2);
+
+    v.clear();
+    for (int i = 0; i < 4; i++)
+    {
+        v.push_back(i);
+    }
+    for (int i = 5; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    cout << lower_bound(v.begin(), v.end(), 4) - v.begin() << endl; //3;
+    //4를 찾으려하니 3을 반환 1,2,3,5의 5를 가리키는 인덱스를 반환
+    //즉 4의 이산인 첫번째 지점을 반환한것
+
+    v.clear();
+    for (int i = 2; i < 6; i++)
+    {
+        v.push_back(i);
+    }
+    v.push_back(7);
+    cout << upper_bound(v.begin(), v.end(), 6) - v.begin() << endl; //4
+    cout << lower_bound(v.begin(), v.end(), 6) - v.begin() << endl; //4
+    cout << upper_bound(v.begin(), v.end(), 9) - v.begin() << endl; //5
+    cout << lower_bound(v.begin(), v.end(), 9) - v.begin() << endl; //5
+    cout << upper_bound(v.begin(), v.end(), 0) - v.begin() << endl; //0
+    cout << lower_bound(v.begin(), v.end(), 0) - v.begin() << endl; //0
+
+    //next permutation은 배열을 오름차순으로 순열을 만들 수 있을 때 true 반환
+    // 그렇지 않다면 false를 반환하고 배열을 원래의 배열로 복원
+    //prev permutation 은 내림차순
+    cout << "next permutaion 오름차순  / prev permutaion 내림차순 " << endl;
+    v.clear();
+    int arrr[5] = {0, 1, 2, 3, 4};
+    for (int i = 0; i < 5; i++)
+    {
+        v.push_back(i);
+    }
+
+    do
+    {
+        for (int i = 0; i < v.size(); i++)
+        {
+            cout << v[i] << "  ";
+        }
+        cout << endl;
+    } while (next_permutation(v.begin(), v.end()));
+    cout << endl;
+    cout << "prev_permutation" << endl;
+    v.clear();
+    for (int i = 4; i >= 0; i--)
+        v.push_back(arrr[i]);
+    do
+    {
+        for (int i = 0; i < v.size(); i++)
+        {
+            cout << v[i] << "  ";
+        }
+        cout << endl;
+    } while (prev_permutation(v.begin(), v.end()));
 
     int numbers = 10;
     b2(numbers);
