@@ -60,6 +60,13 @@ struct cmp
 
 void b2(int &a);
 void b3(int *a);
+void make_permutation(int n, int r, int depth);
+void combi(int start, vector<int> &b);
+void arrs(int a[][10]);
+
+vector<int> v;
+int n = 3;
+int k = 2;
 
 int main()
 {
@@ -125,7 +132,7 @@ int main()
     cout << str << endl; //223
 
     // 입력 : 1293746 일때 입력받는 방법
-    vector<int> v(5, 0);
+    v = vector<int>(5, 0);
     for (int i = 0; i < 5; i++)
     {
         scanf("%1d", &v[i]);
@@ -267,9 +274,15 @@ int main()
     bool b = m.erase("amap");
     if (b)
         cout << "erased" << endl;
-    auto search = m.find("amap");
+    auto search = m.find("map");
     if (search == m.end())
+    {
         cout << "not found" << endl;
+    }
+    else
+    {
+        cout << "search -> find " << search->first << "  " << (*search).second << endl;
+    }
     m.clear();
     cout << m["amap"] << endl;
     if (m.end() == m.find("map"))
@@ -459,8 +472,9 @@ int main()
     //prev permutation 은 내림차순
     cout << "next permutaion 오름차순  / prev permutaion 내림차순 " << endl;
     v.clear();
-    int arrr[5] = {0, 1, 2, 3, 4};
-    for (int i = 0; i < 5; i++)
+    int arrr[3] = {1, 2, 3};
+    cout << "next_permutation 오름차순 순열" << endl;
+    for (int i = 0; i < 3; i++)
     {
         v.push_back(i);
     }
@@ -474,9 +488,9 @@ int main()
         cout << endl;
     } while (next_permutation(v.begin(), v.end()));
     cout << endl;
-    cout << "prev_permutation" << endl;
+    cout << "prev_permutation 내림차순 순열" << endl;
     v.clear();
-    for (int i = 4; i >= 0; i--)
+    for (int i = 3; i > 0; i--)
         v.push_back(arrr[i]);
     do
     {
@@ -485,15 +499,100 @@ int main()
             cout << v[i] << "  ";
         }
         cout << endl;
-    } while (prev_permutation(v.begin(), v.end()));
+    } while (prev_permutation(v.begin(), v.end())); //ㄴㅐ림차순 순열 뽑기
+
+    str = "abcda";
+    string *point = &str;
+    string &ref = str; //별명
+    cout << "pointer " << point << endl;
+    cout << "*pointer  " << *point << endl;
+    cout << "&ref " << ref << endl; //별명임
 
     int numbers = 10;
+
+    // void b2(int &a) { a = 2; }
+    // void b3(int *a) { *a = 3; }
     b2(numbers);
     cout << "b2(numbers)  " << numbers << endl;
     b3(&numbers);
     cout << numbers << endl;
 
+    // void arrs(int a[][10]){
+    //     a[0][4] = 44;
+    // }
+    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
+    arrs(arr2);
+    cout << "void arrs(int a[][10])   " << arr2[0][4] << endl;
+
+    //depth이용 순열
+    cout << "depth이용 재귀로 순열만들기 - 오름차순  (처음depth는 0)" << endl;
+    v.clear();
+    for (int i = 0; i < 3; i++)
+        v.push_back(arrr[i]);
+    make_permutation(3, 3, 0);
+
+    cout << "조합  : 뽑아야하는 대상이 적은 경우만!!!for 문 " << endl;
+    int aa[] = {1, 2, 3, 4, 5, 6};
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            for (int k = 0; k < j; k++)
+            {
+                cout << aa[i] << " " << aa[j] << " " << aa[k] << endl;
+            }
+        }
+    }
+    cout << "조합  : recursive combination " << endl;
+    n = 3;
+    k = 2;
+    vv.clear();
+    combi(-1, vv);
+
     return 0;
+}
+void combi(int start, vector<int> &b)
+{
+    if (b.size() == k)
+    {
+        for (int i = 0; i < b.size(); i++)
+        {
+            cout << b[i] << " ";
+        }
+        cout << endl;
+    }
+    for (int i = start + 1; i < n; i++)
+    {
+        b.push_back(i);
+        combi(i, b);
+        b.pop_back();
+    }
+    return;
+}
+
+void make_permutation(int n, int r, int depth)
+{ //하나의 축을 잡고 그 축을 바꿔나가면서 바꾸면서 만들기
+    if (r == depth)
+    {
+        for (int i = 0; i < v.size(); i++)
+        {
+            cout << v[i] << " ";
+        }
+        cout << endl;
+        return;
+    }
+    for (int i = depth; i < n; i++)
+    {
+        swap(v[i], v[depth]);
+        make_permutation(n, r, depth + 1);
+        swap(v[i], v[depth]);
+    }
+    return;
+}
+
+void arrs(int a[][10])
+{
+    a[0][4] = 44;
 }
 
 void b2(int &a) { a = 2; }
