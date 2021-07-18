@@ -381,5 +381,16 @@ int main()
     for (int i : cnt)
         cout << " sort(vv.begin(), vv.end(), greater<int>()); //내림차순  " << i << endl;
 
+    //실수입력
+    int one = 1, two = 2, three = 3;
+    scanf("%d %d.%d", &one, &two, &three); // 3 3.21입력받을때
+    double d = 1.23456789;
+    cout << "d " << d << endl; //1.234567
+    cout.precision(10);
+    cout << "after cout.precision(10)  " << d << endl;
+
+    cout.precision(7);
+    cout << "after cout.precision(7) " << d << endl; //정수+소수부분해서 7자리 출력
+
     return 0;
 }
