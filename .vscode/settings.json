@@ -68,7 +68,8 @@
     "string_view": "cpp",
     "unordered_set": "cpp",
     "__tuple": "cpp",
-    "functional": "cpp"
+    "functional": "cpp",
+    "__functional_base": "cpp"
   }
   
 }

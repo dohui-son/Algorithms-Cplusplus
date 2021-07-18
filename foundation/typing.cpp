@@ -213,6 +213,173 @@ int main()
         cout << *aut << endl;
     fill(v.begin(), v.end(), 10);
     v.clear(); //사이즈를 0으로 만들어줌
+    for (int i : v)
+        cout << "v " << i << endl;
+    int arr[10] = {
+        0,
+    };
+    auto auu = find(arr, arr + 10, 10);
+    if (auu == arr + 10)
+        cout << "not found" << endl;
+    fill(arr, arr + 10, 10);
+    auu = find(arr, arr + 10, 10);
+    if (auu == arr + 10)
+        cout << "not found";
+    else
+        cout << *auu << endl;
+
+    int arr2[10][10];
+    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
+    cout << arr2[1][1] << endl;
+    unordered_map<string, int> umap;
+    umap["insert"] = 4; //입력
+    umap["insert"] = 7; //값 바꾸기
+    umap["insert"]++;
+    cout << umap["insert"] << endl;
+    cout << umap.size() << endl;
+    umap.erase("insert");
+    cout << umap.size() << endl;
+
+    map<string, int> m;                // 기본 오름차순
+    map<int, int, greater<int> > down; //내림차순
+    m["map"]++;
+    cout << " map :  " << m["map"] << endl;
+    m["amap"] = 2;
+    for (auto i : m)
+        cout << "i.first  " << i.first << "     i.second  " << i.second << endl;
+    for (int i = 6; i > 0; i--)
+    {
+        down[i] = 8;
+    }
+    for (auto i : down)
+        cout << i.first << "   " << i.second << endl;
+    bool b = m.erase("amap");
+    if (b)
+        cout << " amap erased" << endl;
+    auto search = m.find("map");
+    if (search == m.end())
+        cout << "not found" << endl;
+    else
+        cout << "serach-> first -  " << search->first << "   (*search).second - " << (*search).second << endl;
+    m.clear();
+    cout << "m[\"amap\"]  " << m["amap"] << endl;
+    if (m.end() == m.find("map"))
+        cout << "erased all" << endl;
+    cout << "m.size()  " << m.size() << endl;
+
+    //중복요소는 없고 오로지 유닉한 값만 저장 + 오름차순 자동정렬
+    set<pair<string, int> > se;
+    set<int, greater<int> > set_less;
+    se.insert({"set1", 1});
+    se.insert({"set1", 2});
+    se.insert({"set1", 3});
+    se.insert({"set1", 4});
+    se.insert({"set1", 5});
+    cout << "se.size()  " << se.size() << endl;
+    for (auto i : se)
+        cout << "se  " << i.first << "  " << i.second << endl;
+    auto set_a = se.find({"set1", 1});
+    if (set_a != se.end())
+        cout << "found " << endl;
+
+    multiset<int> ms; // 오름차순 , 중복가능ㅇ
+    multiset<char> msc;
+    multiset<int, greater<int> > msdown; //내림차순
+    for (int i = 7; i > 0; i--)
+    {
+        ms.insert(i);
+        msc.insert((char)i + 65);
+        msdown.insert(i);
+    }
+    for (auto i : ms)
+        cout << "ms  " << i << endl;
+    for (auto i : msc)
+        cout << "msc  " << i << endl;
+    for (auto i : msdown)
+        cout << "msdown  " << i << endl;
+
+    for (auto i = ms.begin(); i != ms.end(); i++)
+        cout << "*i  " << *i << "  ";
+    cout << endl;
+    auto multis = ms.find(90);
+    ms.erase(ms.begin(), multis);
+    cout << "size after erease  - " << ms.size() << endl;
+    msc.erase(msc.begin());
+    cout << "Size after msc.erase(msc.begin());  " << msc.size() << endl;
+
+    stack<string> st; // 괄호만들기, 짝찾기, "교차하지 않고"라는 문장
+    st.push("hi");
+    st.push("  ");
+    cout << "stack 괄호만들기, 짝짖기, '교차하지 않고'라는 문장" << endl;
+    while (st.size())
+    {
+        cout << st.top() << endl;
+        st.pop();
+    }
+
+    queue<int> q;
+    q.push(1);
+    q.push(2);
+    cout << q.front() << endl;
+    q.pop();
+    cout << q.front() << endl;
+    cout << q.size() << endl;
+
+    deque<int> dq;
+    dq.push_back(1);
+    dq.push_back(3);
+    dq.push_front(9);
+    dq.push_front(100);
+    cout << dq.front() << endl;
+    cout << dq.back() << endl;
+    cout << dq.size() << endl;
+    dq.pop_front();
+    cout << dq.front() << endl;
+    dq.pop_back();
+    cout << dq.back() << endl;
+
+    vector<int> vv;
+    for (int i = 0; i < 10; i++)
+    {
+        vv.push_back(i);
+    }
+    cout << "before roatation  " << vv[0] << endl;
+    rotate(vv.begin(), vv.begin() + vv.size() - 1, vv.end()); //뒤로 돌리기
+    cout << "after rotation  " << vv[0] << endl;
+    rotate(vv.begin(), vv.begin() + 1, vv.end()); //앞으로
+    cout << " roatation  " << vv[0] << endl;
+
+    //n진법 ( 10 -> 2 )
+    vv.clear();
+    cout << vv.size() << endl;
+    int nn = 100, bb = 2;
+    while (nn > 1)
+    {
+        vv.push_back(nn % bb);
+        nn /= bb;
+    }
+    if (nn == 1)
+        vv.push_back(1);
+    reverse(vv.begin(), vv.end());
+    cout << "10진법에서 2진법으로  " << endl;
+    for (int aa : vv)
+    {
+        if (aa >= 10)
+            cout << char(aa + 55) << endl;
+        else
+            cout << aa;
+    }
+    cout << endl;
+
+    //정렬
+    int cnt[4] = {7, 8, 9, 1};
+    //bool comp(int a, int b){return a<=b;} // 오름차순
+    //sort(cnt,cnt+4, comp);
+    for (int i : cnt)
+        cout << "sort  " << i << endl;
+    sort(vv.begin(), vv.end(), greater<int>()); //내림차순
+    for (int i : cnt)
+        cout << " sort(vv.begin(), vv.end(), greater<int>()); //내림차순  " << i << endl;
 
     return 0;
 }
