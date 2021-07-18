@@ -506,7 +506,7 @@ int main()
     string &ref = str; //별명
     cout << "pointer " << point << endl;
     cout << "*pointer  " << *point << endl;
-    cout << "&ref " << ref << endl; //별명임
+    cout << "&ref " << ref << endl; //별명
 
     int numbers = 10;
 
