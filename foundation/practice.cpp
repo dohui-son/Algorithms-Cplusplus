@@ -339,5 +339,177 @@ int main()
         cout << i << "  ";
     cout << endl;
 
+    for (auto i = ms.begin(); i != ms.end(); i++)
+    {
+        cout << "*i  " << *i << "  ";
+    }
+    cout << endl;
+
+    auto multis = ms.find(90);
+    ms.erase(ms.begin(), multis);
+    cout << ms.size() << endl;
+
+    cout << msc.size() << endl;
+    msc.erase(msc.begin());
+    cout << msc.size() << endl;
+
+    cout << "stack 괄호만들기, 짝짓기, '교차하지 않고'라는 문장" << endl;
+    stack<string> st; //괄호만들기, 짝짓기, "교차하지 않고"라는 문장
+    st.push("hi");
+    st.push("  ");
+    cout << st.size() << endl;
+
+    while (st.size())
+    {
+        cout << "st.top()  : " << st.top() << endl;
+        st.pop();
+    }
+
+    queue<int> q;
+    for (int i = 0; i < 4; i++)
+    {
+        q.push(i);
+        cout << q.front() << " ";
+    }
+    cout << "size  " << q.size() << endl;
+    q.pop();
+    cout << q.front() << endl;
+    cout << endl;
+    cout << "size  " << q.size() << endl;
+
+    deque<int> dq;
+    for (int i = 0; i < 3; i++)
+    {
+        dq.push_back(-i);
+        dq.push_front(i);
+    }
+    while (dq.size())
+    {
+        cout << "size" << dq.size() << endl;
+        cout << "front  " << dq.front() << endl;
+        cout << "back  " << dq.back() << endl;
+        dq.pop_front();
+        dq.pop_back();
+    }
+
+    v.clear();
+    for (int i = 0; i < 10; i++)
+        v.push_back(i);
+    cout << "before rotation : v[0]  " << v[0] << endl;
+    rotate(v.begin(), v.begin() + v.size() - 1, v.end()); //뒤로
+    cout << "after 뒤로 돌리기 : v[0]  " << v[0] << endl;
+    rotate(v.begin(), v.begin() + 1, v.end()); //앞으로
+    cout << "after 앞으로 돌리기 : v[0]  " << v[0] << endl;
+
+    //n진법 ( 10 -> 2 )
+    v.clear();
+    cout << "10진법에서 2진법으로 " << endl;
+    int nn = 100, bb = 2;
+    while (nn > 1)
+    {
+        v.push_back(nn % bb);
+        nn /= bb;
+    }
+    if (nn == 1)
+        v.push_back(1);
+    reverse(v.begin(), v.end());
+    for (int aa : v)
+    {
+        if (aa >= 10)
+            cout << char(aa + 55) << endl;
+        else
+            cout << aa;
+    }
+    cout << endl;
+
+    //정렬
+    int cnt[4] = {7, 8, 9, 1};
+    //bool comp(int a,int b)return a<=b; //오름차순
+    //sort (cnt, cnt+1, comp);
+    sort(cnt, cnt + 4);
+    for (int i = 0; i < 4; i++)
+    {
+        cout << cnt[i] << "  ";
+    }
+    cout << endl;
+
+    sort(cnt, cnt + 4, greater<int>()); //내림차순
+    for (int i = 0; i < 4; i++)
+    {
+        cout << cnt[i] << "  ";
+    }
+    cout << endl;
+    sort(v.begin(), v.end(), greater<int>());
+    for (int i : v)
+        cout << i << "  ";
+    cout << endl;
+
+    //실수입력
+    int one = 1, two = 2, three = 3;
+    scanf("%d %d.%d", &one, &two, &three);
+    double d = 1.23456789;
+    cout << "d  " << d << endl;                        //1.23457
+    cout.precision(10);                                //정수부분+소수부분 해서 10자리 출력 (소수부분은 반올림)
+    cout << "after cout.precision(10)  " << d << endl; //1.23456789
+    cout.precision(7);                                 //정수부분+소수부분 해서 7자리 출력 (소수부분은 반올림)
+    cout << "after cout.precision(7)  " << d << endl;  //1.234568
+
+    // 소수점 6자리까지 (반올림) 그리고 2를 02로 만들어서 출력
+    cout << "use printf :" << endl;
+    printf("%.6lf\n", d);  //1.23458
+    printf("%03d\n", two); //002
+    printf("%02d\n", two); //02
+
+    //lower_bound(하한)은 0번째 배열의 원소부터 찾아서 어떠한 값의 "이상이 되는 위치"(이터레이터)를 반환
+    //없을때는 value보다 큰 값 중 가장 작은 값의 주소값 반환
+    //upper_bound 는 마지막 원소부터 원하는 값을 찾고 그 값이 시작되기전의 이터레이터를 반환
+    int ar[5] = {1, 2, 2, 3, 4};
+    v.clear();
+    for (int i = 0; i < 5; i++)
+    {
+        v.push_back(ar[i]);
+    }
+    sort(v.begin(), v.end()); //소팅하고 lower_bound upper_bound 를 써야함
+    int x = 2;
+    //x의 개수
+    int cc = (int)(upper_bound(v.begin(), v.end(), x) - lower_bound(v.begin(), v.end(), x));
+    cout << "x의 개수 : " << cc << endl;
+    //시작되는 지점idx
+    int start = (int)(lower_bound(v.begin(), v.end(), x) - v.begin());
+    cout << "시작되는 지점idx : " << start << endl; // 1
+    //끝난 지점idx
+    int fin = (int)(upper_bound(v.begin(), v.end(), x) - v.begin());
+    cout << "끝난 지점idx :  " << fin << endl;
+    //lower_bound ( 이상이되는 시작 위치의 값 )
+    int s2 = *lower_bound(v.begin(), v.end(), x);
+    cout << "lower_bound ( 이상이되는 시작 위치의 값 ) : " << s2 << endl;
+    //upper_bound ( 초과가 되는 위치의 값 )
+    int f2 = *upper_bound(v.begin(), v.end(), x);
+    cout << "upper_bound ( 초과가 되는 위치의 값 ) : " << f2 << endl;
+
+    //배열로...
+    //x의 개수
+    cc = (int)(upper_bound(ar, ar + 5, x) - lower_bound(ar, ar + 5, x));
+    cout << "x의 개수 : " << cc << endl;
+    //시작되는 지점idx
+    start = (int)(lower_bound(ar, ar + 5, x) - ar);
+    cout << "시작되는 지점idx : " << start << endl; // 1
+                                                    //끝난 지점idx
+    fin = (int)(upper_bound(ar, ar + 5, x) - ar);
+    cout << "끝난 지점idx :  " << fin << endl;
+    //lower_bound ( 이상이되는 시작 위치의 값 )
+    s2 = *lower_bound(ar, ar + 5, x);
+    cout << "lower_bound ( 이상이되는 시작 위치의 값 ) : " << s2 << endl;
+    //upper_bound ( 초과가 되는 위치의 값 )
+    f2 = *upper_bound(ar, ar + 5, x);
+    cout << "upper_bound ( 초과가 되는 위치의 값 ) : " << f2 << endl;
+
+    v.clear();
+    for (int i = 2; i < 6; i++)
+    {
+        v.push_back(i);
+    }
+    v.push_back(7);
+
     return 0;
 }
