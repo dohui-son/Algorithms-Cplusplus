@@ -11,6 +11,18 @@
 
 using namespace std;
 #define endl "\n";
+
+void b2(int &a);
+void b3(int *a);
+void arrs(int a[][10]);
+void make_permutation(int n, int r, int depth);
+void combi(int start, vector<int> &b);
+void arrs(int a[][10]);
+
+vector<int> v;
+int n = 3;
+int k = 2;
+
 struct P //struct with custom sorting
 {
     int y, x;
@@ -57,16 +69,6 @@ struct cmp
         return a.x < b.x;
     }
 };
-
-void b2(int &a);
-void b3(int *a);
-void make_permutation(int n, int r, int depth);
-void combi(int start, vector<int> &b);
-void arrs(int a[][10]);
-
-vector<int> v;
-int n = 3;
-int k = 2;
 
 int main()
 {

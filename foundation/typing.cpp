@@ -13,6 +13,14 @@ using namespace std;
 
 vector<int> v;
 int n = 3, k = 2;
+void b2(int &a) { a = 2; }
+void b3(int *a) { *a = 3; }
+void arrs(int a[][10])
+{
+    a[0][4] = 44;
+}
+void make_permutation(int n, int r, int depth);
+void combi(int start, vector<int> &b);
 
 struct P
 { //struct with custom sorting
@@ -28,12 +36,20 @@ struct P
     {
         if (x == a.x)
             return y < a.y;
-        return x < a.x;
+        return x < a.x; //내림차순 ( x 기준 )
     }
 };
 
+struct percent
+{ //단순한 struct
+    int x, y;
+    double w, d, l;
+} a[6]; //한정
+//percent a;
+//  cin>> a[0].x; 이런식
+
 struct Point
-{
+{ //priority queue에 int 외에 다른 구조체가 들어갈때
     int y, x;
     Point(int y, int x) : y(y), x(x) {}
     Point()
@@ -41,9 +57,9 @@ struct Point
         y = -1;
         x = -1;
     }
-    bool operator<(const Point &p) const { return x > p.x; } //오름차순
+    bool operator<(const Point &p) const { return x > p.x; } //오름차순 ( x 기준 )
 };
-struct Ppoint
+struct Ppoint //내림차순 ( x 기준 )
 {
     int y, x;
 };
@@ -52,43 +68,36 @@ struct cmp
     bool operator()(Ppoint a, Ppoint b) { return a.x < b.x; }
 }; //내림차순
 
-void b2(int &a) { a = 2; }
-void b3(int *a) { *a = 3; }
-void arrs(int a[][10])
-{
-    a[0][4] = 44;
-}
-void make_permutation(int n, int r, int depth);
-void combi(int start, vector<int> &b);
-
 int main()
 {
+    cout << "priority queue에 int 외에 다른 구조체가 들어갈때" << endl;
     priority_queue<Point> pq_struct;
     pq_struct.push({1, 10});
     pq_struct.push({2, 3});
     pq_struct.push({4, 5});
     pq_struct.push({6, 7});
-    cout << "pq_struct " << pq_struct.top().x << endl;
-    cout << "pq_struct " << pq_struct.top().y << endl;
+    cout << "pq_struct top().x  " << pq_struct.top().x << endl; // 3 //오름차순 ( x 기준 )
+    cout << "pq_struct top().y  " << pq_struct.top().y << endl; // 2
 
-    priority_queue<Ppoint, vector<Ppoint>, cmp> pq; //less
+    cout << "내림차순 ( x 기준 )" << endl;
+    priority_queue<Ppoint, vector<Ppoint>, cmp> pq; //greater
     pq.push({1, 2});
     pq.push({10, 1});
     pq.push({11, 1});
     pq.push({4, 5});
-    cout << "custom pq less  " << pq.top().x << endl;
-    cout << "custom pq less  " << pq.top().y << endl;
+    cout << "custom pq greater  " << pq.top().x << endl; //5
+    cout << "custom pq greater  " << pq.top().y << endl; //4
 
     //priority_queue 다익스트라 그리디
-    priority_queue<int, vector<int>, greater<int> > pq_up; //오름차순
-    priority_queue<int> pq_down;
+    priority_queue<int, vector<int>, greater<int> > pqdown; //내림차순
+    priority_queue<int> pq_up;
     for (int i = 7; i > 0; i--)
     {
-        pq_up.push(i);
-        cout << "pq_up  <greater<int>> " << pq_up.top() << endl;
+        pqdown.push(i);
+        cout << "pqdown  <greater<int>>내림차순 - 가장 작은 top " << pqdown.top() << endl;
 
-        pq_down.push(i);
-        cout << "pq_down default " << pq_down.top() << endl;
+        pq_up.push(i);
+        cout << "pq_up default오름차순 - 가장 큰 top " << pq_up.top() << endl;
     }
 
     char s[50] = {
@@ -98,7 +107,7 @@ int main()
     str += " ";
     str += "space added";
     cout << str << endl;
-    str = ""; //string init
+    str = ""; //string 초기화
     cout << "str: " << str << "init" << endl;
     int initial[10] = {
         0,
@@ -124,7 +133,7 @@ int main()
     to_int = c - 'A' + 10; // 정수형 12
     cout << "'C'-'A'+10 " << to_int << endl;
 
-    c = '\0'; // char 형 초기화 - null 인 \0
+    c = '\0'; // char 형 초기화 ---- null 인 \0
     cout << "c : "
          << c << "char init done " << endl;
     str = "123";
@@ -155,8 +164,8 @@ int main()
     cout << "[C++] round 반올림 example" << endl;
     cout << "round(3.2) : " << round(a1) << endl;
     cout << "round(3.7) : " << round(a2) << endl;
-    cout << "round(-3.2) : " << round(a3) << endl; //-3
-    cout << "round(-3.7) : " << round(a4) << endl; //-4
+    cout << "round(-3.2) : " << round(a3) << endl; //round(-3.2)  -3
+    cout << "round(-3.7) : " << round(a4) << endl; //round(-3.7)  -4
 
     //올림 함수
     cout << " ceil(4.3) " << ceil(4.3) << endl;
@@ -173,7 +182,7 @@ int main()
 
     //asci code A-Z 65-90
     //asci code a-z 97-122
-    //a에서 z까지 입력 받는데 이를 정수로 0-26으로 표현
+    //a에서 z까지 입력 받는데 이를 정수로 0-26으로 표현 ***
     c = 'a';
     cout << (int)c - 97 << endl;  // 0
     cout << (int)c - 'a' << endl; // 0
@@ -195,6 +204,7 @@ int main()
     string strr = "hello for the fine";
     if (strr.find("hi") == string::npos)
         cout << "string::npos " << endl;
+
     pair<int, int> pi;
     pi = {1, 2};
     int num1 = 0, num2 = 0, num3 = 0;
@@ -203,7 +213,7 @@ int main()
     tuple<int, int, int> tl;
     tl = {1, 2, 3};
     tie(num1, num2, num3) = tl;
-    cout << num1 << num2 << num3 << endl;
+    cout << num1 << "  " << num2 << "  " << num3 << endl;
 
     v.push_back(100);
     v.pop_back();
@@ -237,6 +247,8 @@ int main()
     else
         cout << *auu << endl;
 
+    //fill(시작값, 끝값, 초기화할값);
+    //memset은 바이트로 초기화하기 때문에 0, -1로만 초기화 가능
     int arr2[10][10];
     fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
     cout << arr2[1][1] << endl;
@@ -250,10 +262,10 @@ int main()
     cout << umap.size() << endl;
 
     map<string, int> m;                // 기본 오름차순
-    map<int, int, greater<int> > down; //내림차순
-    m["map"]++;
+    map<int, int, greater<int> > down; // 내림차순
+    m["map"]++;                        // 처음에 입력하고 값 넣기
     cout << " map :  " << m["map"] << endl;
-    m["amap"] = 2;
+    m["amap"] = 2; // 처음에 입력
     for (auto i : m)
         cout << "i.first  " << i.first << "     i.second  " << i.second << endl;
     for (int i = 6; i > 0; i--)
@@ -270,15 +282,20 @@ int main()
         cout << "not found" << endl;
     else
         cout << "serach-> first -  " << search->first << "   (*search).second - " << (*search).second << endl;
+    cout << m["third"] << endl;
+    cout << "size " << m.size() << endl;
+    for (auto i : m)
+        cout << "inserted without adding value  " << i.first << endl;
     m.clear();
-    cout << "m[\"amap\"]  " << m["amap"] << endl;
     if (m.end() == m.find("map"))
-        cout << "erased all" << endl;
-    cout << "m.size()  " << m.size() << endl;
+        cout << "clear is done" << endl;
+    cout << "m.size() after clear  " << m.size() << endl;
+    for (auto i : m)
+        cout << "map is not empty after clear()  " << i.first << endl;
 
     //중복요소는 없고 오로지 유닉한 값만 저장 + 오름차순 자동정렬
     set<pair<string, int> > se;
-    set<int, greater<int> > set_less;
+    set<int, greater<int> > set_greater; // 내림차순
     se.insert({"set1", 1});
     se.insert({"set1", 2});
     se.insert({"set1", 3});
@@ -395,11 +412,11 @@ int main()
     scanf("%d %d.%d", &one, &two, &three); // 3 3.21입력받을때
     double d = 1.23456789;
     cout << "d " << d << endl; //1.234567
-    cout.precision(10);
+    cout.precision(10);        //정수부분+소수부분 해서 10자리 출력 ( 소수부분은 반올림 )
     cout << "after cout.precision(10)  " << d << endl;
 
-    cout.precision(7);
-    cout << "after cout.precision(7) " << d << endl; //정수+소수부분해서 7자리 출력(소수부분 반올림)
+    cout.precision(7);                               //정수+소수부분해서 7자리 출력(소수부분 반올림)
+    cout << "after cout.precision(7) " << d << endl; //1.234568
 
     //소수점 6자리까지 (반올림) 그리고 2 를 02로 만들어서 출력
     d = 1.233456789;
@@ -416,7 +433,7 @@ int main()
     {
         v.push_back(ar[i]);
     }
-    sort(v.begin(), v.end()); //소팅하고 하면 다름
+    sort(v.begin(), v.end()); //소팅하고 해야함
     int x = 2;
     //x의 개수
     int cc = (int)(upper_bound(v.begin(), v.end(), x) - lower_bound(v.begin(), v.end(), x));
@@ -470,9 +487,9 @@ int main()
     str = "abcda";
     string *point = &str;
     string &ref = str; // 별명
-    cout << "pointer " << point << endl;
-    cout << "*pointer " << *point << endl;
-    cout << "ref별명" << ref << endl;
+    cout << "pointer  " << point << endl;
+    cout << "*pointer  " << *point << endl;
+    cout << "ref별명  " << ref << endl;
 
     int numbers = 10;
     //void b2(int &a){a=2;}
@@ -484,7 +501,7 @@ int main()
     // void arrs(int a[][10]){
     //     a[0][4] =44;
     // }
-    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
+    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10); //2차원 배열 초기화
     arrs(arr2);
     cout << "void arrs(int a[][10])  " << arr2[0][4] << endl;
 
@@ -531,7 +548,7 @@ int main()
 
     cout << "조합 : 뽑아야하는 대상이 적은 경우만 !!!for문" << endl;
     v.clear();
-    aa[] = {1, 2, 3, 4, 5, 6};
+    int aa[] = {1, 2, 3, 4, 5, 6};
     for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < i; j++)
