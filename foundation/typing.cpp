@@ -52,6 +52,15 @@ struct cmp
     bool operator()(Ppoint a, Ppoint b) { return a.x < b.x; }
 }; //내림차순
 
+void b2(int &a) { a = 2; }
+void b3(int *a) { *a = 3; }
+void arrs(int a[][10])
+{
+    a[0][4] = 44;
+}
+void make_permutation(int n, int r, int depth);
+void combi(int start, vector<int> &b);
+
 int main()
 {
     priority_queue<Point> pq_struct;
@@ -390,7 +399,191 @@ int main()
     cout << "after cout.precision(10)  " << d << endl;
 
     cout.precision(7);
-    cout << "after cout.precision(7) " << d << endl; //정수+소수부분해서 7자리 출력
+    cout << "after cout.precision(7) " << d << endl; //정수+소수부분해서 7자리 출력(소수부분 반올림)
+
+    //소수점 6자리까지 (반올림) 그리고 2 를 02로 만들어서 출력
+    d = 1.233456789;
+    printf("%.6lf\n", d);  //1.23458
+    printf("%03d\n", two); //002
+    printf("%02d\n", two); //02
+
+    //lower_bound(하한)는 0번째 배열의 원소부터 찾아서 어떠한 값의 "이상이 되는 위치"(이터레이터)를 반환
+    //없을때는 value보다 큰 값중 가장 작은 값의 주소값 반환
+    //upper_bound는 마지막 원소부터 원하는 값을 찾고 그 값이 시작되기 전의 이터레이터를 반환
+    int ar[5] = {1, 2, 2, 3, 4};
+    v.clear();
+    for (int i = 0; i < 5; i++)
+    {
+        v.push_back(ar[i]);
+    }
+    sort(v.begin(), v.end()); //소팅하고 하면 다름
+    int x = 2;
+    //x의 개수
+    int cc = (int)(upper_bound(v.begin(), v.end(), x) - lower_bound(v.begin(), v.end(), x));
+    cout << "x의 개수 " << cc << endl;
+    //시작되는 점
+    int f = (int)(lower_bound(v.begin(), v.end(), x) - v.begin());
+    cout << "시작되는 점 " << f << endl;
+    //끝나는 점
+    int t = (int)(upper_bound(v.begin(), v.end(), x) - v.begin());
+    cout << "끝나는 점 " << t << endl;
+
+    int f2 = *lower_bound(v.begin(), v.end(), x);
+    cout << "lower_bound (이상이 되는 위치의 값)  " << f2 << endl;
+    int t2 = *upper_bound(v.begin(), v.end(), x);
+    cout << "upper_bound (초과가 되는 위치의 값) " << t2 << endl;
+
+    //배열
+    //x의 개수
+    cout << endl;
+    cout << "배열 " << endl;
+    cc = (int)(upper_bound(ar, ar + 5, x) - lower_bound(ar, ar + 5, x));
+    cout << "x의 개수 " << cc << endl;
+    //시작되는 점
+    f = (int)(lower_bound(ar, ar + 5, x) - ar);
+    cout << "시작되는 점 " << f << endl;
+    //끝나는 점
+    t = (int)(upper_bound(ar, ar + 5, x) - ar);
+    cout << "끝나는 점 " << t << endl;
+
+    f2 = *lower_bound(ar, ar + 5, x);
+    cout << "lower_bound (이상이 되는 위치의 값)  " << f2 << endl;
+    t2 = *upper_bound(ar, ar + 5, x);
+    cout << "upper_bound (초과가 되는 위치의 값) " << t2 << endl;
+
+    v.clear();
+    for (int i = 2; i < 6; i++)
+        v.push_back(i);
+    v.push_back(7);
+    // 2 3 4 5 7
+    cout << upper_bound(v.begin(), v.end(), 6) - v.begin() << endl; //4
+    cout << lower_bound(v.begin(), v.end(), 6) - v.begin() << endl; //4
+    cout << upper_bound(v.begin(), v.end(), 9) - v.begin() << endl; //5
+    cout << lower_bound(v.begin(), v.end(), 9) - v.begin() << endl; //5
+    if (upper_bound(v.begin(), v.end(), 9) == v.end())
+        cout << "nope" << endl;
+    cout << upper_bound(v.begin(), v.end(), 0) - v.begin() << endl; //0
+    cout << lower_bound(v.begin(), v.end(), 0) - v.begin() << endl; //0
+    if (upper_bound(v.begin(), v.end(), 0) == v.begin())
+        cout << "nope" << endl;
+
+    str = "abcda";
+    string *point = &str;
+    string &ref = str; // 별명
+    cout << "pointer " << point << endl;
+    cout << "*pointer " << *point << endl;
+    cout << "ref별명" << ref << endl;
+
+    int numbers = 10;
+    //void b2(int &a){a=2;}
+    //void b3(int *a){*a = 3;}
+    b2(numbers);
+    cout << "b2(numbers) " << numbers << endl;
+    b3(&numbers);
+    cout << "b3(numbers) " << numbers << endl;
+    // void arrs(int a[][10]){
+    //     a[0][4] =44;
+    // }
+    fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 10);
+    arrs(arr2);
+    cout << "void arrs(int a[][10])  " << arr2[0][4] << endl;
+
+    cout << "next permutation / prev permutaion 중복X 순서O " << endl;
+    //next permutation 은 배열을 오름차순으로 순열을 만들 수 있을 때 true 반환
+    // 그렇지 않다면 false를 반환하고 배열을 원래의 배열로 복원
+    //prev permuation은 내림차순
+    v.clear();
+    int arrr[] = {1, 2, 3};
+    cout << "next permutaion 오름차순 순열 less 뽑기" << endl;
+    for (int i = 0; i < 3; i++)
+        v.push_back(i);
+    do
+    {
+        for (int i = 0; i < v.size(); i++)
+        {
+            cout << v[i] << "  ";
+        }
+        cout << endl;
+    } while (next_permutation(v.begin(), v.end()));
+
+    cout << "prev_permuation 내림차순 순열 greater 뽑기" << endl;
+    v.clear();
+
+    for (int i = 2; i >= 0; i--)
+        v.push_back(arrr[i]);
+    do
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            cout << v[i] << " ";
+        }
+        cout << endl;
+    } while (prev_permutation(v.begin(), v.end())); //내림차순 순열 뽑기
+
+    //depth 순열 뽑기
+    cout << "depth 재귀로 순열 뽑기 - 오름차순 (처음 depth == 0)" << endl;
+    v.clear();
+    for (int i = 0; i < 3; i++)
+    {
+        v.push_back(arrr[i]);
+    }
+    make_permutation(3, 3, 0); // n개중에 r개뽑기 depth0부터 항상 시작
+
+    cout << "조합 : 뽑아야하는 대상이 적은 경우만 !!!for문" << endl;
+    v.clear();
+    aa[] = {1, 2, 3, 4, 5, 6};
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            for (int k = 0; k < j; k++)
+            {
+                cout << aa[i] << " " << aa[j] << " " << aa[k] << endl;
+            }
+        }
+    }
+    cout << "조합 : recursive combination " << endl;
+    n = 3;
+    k = 2;
+    v.clear();
+    combi(-1, v);
 
     return 0;
+}
+
+void make_permutation(int n, int r, int depth)
+{
+    if (r == depth)
+    {
+        for (int i = 0; i < v.size(); i++)
+        {
+            cout << v[i] << " ";
+        }
+        cout << endl;
+        return;
+    }
+    for (int i = depth; i < n; i++)
+    {
+        swap(v[i], v[depth]);
+        make_permutation(n, r, depth + 1);
+        swap(v[i], v[depth]);
+    }
+    return;
+}
+
+void combi(int start, vector<int> &b)
+{
+    if (b.size() == k)
+    {
+        for (int i = 0; i < b.size(); i++)
+            cout << b[i] << " ";
+        cout << endl;
+    }
+    for (int i = 1 + start; i < n; i++)
+    {
+        b.push_back(i);
+        combi(i, b);
+        b.pop_back();
+    }
+    return;
 }
