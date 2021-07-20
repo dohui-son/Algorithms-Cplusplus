@@ -89,7 +89,7 @@ int main()
     cout << "custom pq greater  " << pq.top().y << endl; //4
 
     //priority_queue 다익스트라 그리디
-    priority_queue<int, vector<int>, greater<int> > pqdown; //내림차순
+    priority_queue<int, vector<int>, greater<int>> pqdown; //내림차순
     priority_queue<int> pq_up;
     for (int i = 7; i > 0; i--)
     {
@@ -261,9 +261,9 @@ int main()
     umap.erase("insert");
     cout << umap.size() << endl;
 
-    map<string, int> m;                // 기본 오름차순
-    map<int, int, greater<int> > down; // 내림차순
-    m["map"]++;                        // 처음에 입력하고 값 넣기
+    map<string, int> m;               // 기본 오름차순
+    map<int, int, greater<int>> down; // 내림차순
+    m["map"]++;                       // 처음에 입력하고 값 넣기
     cout << " map :  " << m["map"] << endl;
     m["amap"] = 2; // 처음에 입력
     for (auto i : m)
@@ -294,8 +294,8 @@ int main()
         cout << "map is not empty after clear()  " << i.first << endl;
 
     //중복요소는 없고 오로지 유닉한 값만 저장 + 오름차순 자동정렬
-    set<pair<string, int> > se;
-    set<int, greater<int> > set_greater; // 내림차순
+    set<pair<string, int>> se;
+    set<int, greater<int>> set_greater; // 내림차순
     se.insert({"set1", 1});
     se.insert({"set1", 2});
     se.insert({"set1", 3});
@@ -310,7 +310,7 @@ int main()
 
     multiset<int> ms; // 오름차순 , 중복가능ㅇ
     multiset<char> msc;
-    multiset<int, greater<int> > msdown; //내림차순
+    multiset<int, greater<int>> msdown; //내림차순
     for (int i = 7; i > 0; i--)
     {
         ms.insert(i);
