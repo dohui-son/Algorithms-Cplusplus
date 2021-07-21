@@ -1,3 +1,4 @@
+//멀티탭스케줄링
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -24,7 +25,7 @@ int main()
         { //지금 멀티탭에 안 꽂혀있음
             if (v.size() == k)
             { //멀티탭 꽉 찼음
-                int last_idx = 0, pos;
+                int last_idx = 0, off_idx;
                 for (int _a : v)
                 {
                     int here_pick = INF;
@@ -38,14 +39,14 @@ int main()
                         }
                     }
                     if (last_idx < here_pick)
-                    {
+                    { //here_pick을 INF로 해줌으로서 걔가 앞으로 다시 나오지 않는다면 무조건 바꿔줌
                         last_idx = here_pick;
-                        pos = _a;
+                        off_idx = _a;
                     }
                 }
-                visited[pos] = 0;
+                visited[off_idx] = 0;
                 cnt++;
-                v.erase(find(v.begin(), v.end(), pos));
+                v.erase(find(v.begin(), v.end(), off_idx));
             }
             v.push_back(a[i]);
             visited[a[i]] = 1;
