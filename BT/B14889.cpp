@@ -6,6 +6,17 @@ using namespace std;
 #define endl "\n";
 int n, start, link;
 int s[21][21];
+vector<int>v;
+
+void BT(){
+    if(total == n/2){
+       
+        
+
+        return;
+    }
+}
+
 int main()
 {
     ios::sync_with_stdio(false);
@@ -19,6 +30,8 @@ int main()
             cin >> s[i][j];
         }
     }
+    BT();
+
 
     return 0;
 }
