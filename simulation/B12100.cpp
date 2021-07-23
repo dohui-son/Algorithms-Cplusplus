@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 #define endl '\n'
 using namespace std;
@@ -21,7 +22,10 @@ struct Board
     }
     void _move()
     {
-        int temp[24][24];
+        int temp[24][24] = {{
+            //여기서 초기화 안해주면 아래 주석 풀고
+            0, //값이 안들어간 애들에게 일일이 0 입력해주면 됨
+        }};
         for (int i = 0; i < n; i++)
         {
             int c = -1, d = 0;
@@ -34,8 +38,8 @@ struct Board
                 else
                     temp[i][++c] = a[i][j], d = 1;
             }
-            for (c++; c < n; c++)
-                temp[i][c] = 0;
+            // for (c++; c < n; c++)
+            //     temp[i][c] = 0;
         }
         memcpy(a, temp, sizeof(a));
     }
