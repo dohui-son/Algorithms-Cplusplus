@@ -24,10 +24,11 @@ void go(int y, int x, int first)
         dir++;
     if (!first && y == sy && x == ex)
         dir++;
-    if (!first && y == ey && x == sx)
-        dir++;
     if (!first && y == ey && x == ex)
         dir++;
+    if (!first && y == ey && x == sx)
+        dir++;
+
     int ny = y + dy[dir];
     int nx = x + dx[dir];
     if (visited[ny][nx])
@@ -46,15 +47,17 @@ void rotateAll(int y, int x, int cnt)
         ey = y + 1 * i;
         ex = x + 1 * i;
         vv.clear();
-        vector<int> vvv;
+
         fill(&visited[0][0], &visited[0][0] + 104 * 104, 0);
         visited[sy][sx] = 1;
+        vv.push_back({sy, sx});
         dir = 0;
         go(sy, sx, 1);
+        vector<int> vvv;
         for (pair<int, int> c : vv)
             vvv.push_back(b[c.first][c.second]);
         rotate(vvv.begin(), vvv.begin() + vvv.size() - 1, vvv.end()); // check needed
-        for (int j = 0; j < vvv.size(); j++)
+        for (int j = 0; j < vv.size(); j++)
         {
             b[vv[j].first][vv[j].second] = vvv[j];
         }
@@ -63,8 +66,8 @@ void rotateAll(int y, int x, int cnt)
 
 int solve()
 {
-    for (int i = 0; i < v_idx.size(); i++)
-        rotateAll(v[i].y, v[i].x, v[i].cnt);
+    for (int i : v_idx)
+        rotateAll(v[i].y, v[i].x, v[i].cnt); ///******************
     int _ret = INF;
     for (int i = 0; i < n; i++)
     {
@@ -104,6 +107,7 @@ int main()
         memcpy(b, a, sizeof(b));
         ret = min(ret, solve());
     } while (next_permutation(v_idx.begin(), v_idx.end()));
+    cout << ret << endl;
 
     return 0;
 }
