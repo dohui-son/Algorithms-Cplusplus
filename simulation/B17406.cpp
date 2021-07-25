@@ -18,12 +18,92 @@ struct A
 };
 vector<A> v;
 
+void go(int y, int x, int first)
+{
+    if (!first && y == sy && x == sx)
+        dir++;
+    if (!first && y == sy && x == ex)
+        dir++;
+    if (!first && y == ey && x == sx)
+        dir++;
+    if (!first && y == ey && x == ex)
+        dir++;
+    int ny = y + dy[dir];
+    int nx = x + dx[dir];
+    if (visited[ny][nx])
+        return;
+    visited[ny][nx] = 1;
+    vv.push_back({ny, nx});
+    go(ny, nx, 0);
+}
+
+void rotateAll(int y, int x, int cnt)
+{
+    for (int i = 1; i <= cnt; i++)
+    {
+        sy = y - 1 * i;
+        sx = x - 1 * i;
+        ey = y + 1 * i;
+        ex = x + 1 * i;
+        vv.clear();
+        vector<int> vvv;
+        fill(&visited[0][0], &visited[0][0] + 104 * 104, 0);
+        visited[sy][sx] = 1;
+        dir = 0;
+        go(sy, sx, 1);
+        for (pair<int, int> c : vv)
+            vvv.push_back(b[c.first][c.second]);
+        rotate(vvv.begin(), vvv.begin() + vvv.size() - 1, vvv.end()); // check needed
+        for (int j = 0; j < vvv.size(); j++)
+        {
+            b[vv[j].first][vv[j].second] = vvv[j];
+        }
+    }
+}
+
+int solve()
+{
+    for (int i = 0; i < v_idx.size(); i++)
+        rotateAll(v[i].y, v[i].x, v[i].cnt);
+    int _ret = INF;
+    for (int i = 0; i < n; i++)
+    {
+        int c = 0;
+        for (int j = 0; j < m; j++)
+        {
+            c += b[i][j];
+        }
+        _ret = min(c, _ret);
+    }
+    return _ret;
+}
+
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    cin >>
+    cin >> n >> m >> k;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> a[i][j];
+        }
+    }
+    for (int i = 0; i < k; i++)
+    {
+        cin >> r >> c >> s;
+        r--;
+        c--;
+        v.push_back({r, c, s});
+        v_idx.push_back(i);
+    }
+    do
+    {
+        memcpy(b, a, sizeof(b));
+        ret = min(ret, solve());
+    } while (next_permutation(v_idx.begin(), v_idx.end()));
 
-        return 0;
+    return 0;
 }
