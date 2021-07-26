@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> //배열 회전
 #include <algorithm>
 #include <vector>
 #include <cstring>
@@ -24,17 +24,16 @@ void go(int y, int x, int first)
         dir++;
     if (!first && y == sy && x == ex)
         dir++;
-    if (!first && y == ey && x == ex)
-        dir++;
     if (!first && y == ey && x == sx)
         dir++;
-
+    if (!first && y == ey && x == ex)
+        dir++;
     int ny = y + dy[dir];
     int nx = x + dx[dir];
     if (visited[ny][nx])
         return;
-    visited[ny][nx] = 1;
     vv.push_back({ny, nx});
+    visited[ny][nx] = 1;
     go(ny, nx, 0);
 }
 
@@ -47,17 +46,16 @@ void rotateAll(int y, int x, int cnt)
         ey = y + 1 * i;
         ex = x + 1 * i;
         vv.clear();
-
         fill(&visited[0][0], &visited[0][0] + 104 * 104, 0);
+        vector<int> vvv;
         visited[sy][sx] = 1;
         vv.push_back({sy, sx});
         dir = 0;
         go(sy, sx, 1);
-        vector<int> vvv;
         for (pair<int, int> c : vv)
             vvv.push_back(b[c.first][c.second]);
-        rotate(vvv.begin(), vvv.begin() + vvv.size() - 1, vvv.end()); // check needed
-        for (int j = 0; j < vv.size(); j++)
+        rotate(vvv.begin(), vvv.begin() + vvv.size() - 1, vvv.end());
+        for (int j = 0; j < vvv.size(); j++)
         {
             b[vv[j].first][vv[j].second] = vvv[j];
         }
@@ -67,7 +65,7 @@ void rotateAll(int y, int x, int cnt)
 int solve()
 {
     for (int i : v_idx)
-        rotateAll(v[i].y, v[i].x, v[i].cnt); ///******************
+        rotateAll(v[i].y, v[i].x, v[i].cnt);
     int _ret = INF;
     for (int i = 0; i < n; i++)
     {
@@ -76,7 +74,7 @@ int solve()
         {
             c += b[i][j];
         }
-        _ret = min(c, _ret);
+        _ret = min(_ret, c);
     }
     return _ret;
 }
@@ -97,11 +95,11 @@ int main()
     for (int i = 0; i < k; i++)
     {
         cin >> r >> c >> s;
-        r--;
-        c--;
+        r--, c--;
         v.push_back({r, c, s});
         v_idx.push_back(i);
     }
+
     do
     {
         memcpy(b, a, sizeof(b));

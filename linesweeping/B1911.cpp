@@ -1,39 +1,43 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define endl "\n"
 using namespace std;
-#define prev fuck
-typedef long long ll;
-void fastIO()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-}
-ll n, m, idx, ret;
+int64_t n, l, s, e, ans, idx;
+int nn[10002];
+vector<pair<int, int> > v;
+
 int main()
 {
-    fastIO();
-    cin >> n >> m;
-    vector<pair<int, int> > a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i].first >> a[i].second;
-    sort(a.begin(), a.end());
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cin >> n >> l;
     for (int i = 0; i < n; i++)
     {
-        if (a[i].second <= idx)
+        cin >> s >> e;
+        v.push_back({s, e});
+    }
+    sort(v.begin(), v.end());
+    for (int i = 0; i < n; i++)
+    {
+        if (v[i].second <= idx)
             continue;
-        if (idx < a[i].first)
+        if (idx < v[i].first)
         {
-            int b = (a[i].second - a[i].first) / m + ((a[i].second - a[i].first) % m ? 1 : 0);
-            ret += b;
-            idx = a[i].first + b * m;
+            int b = (v[i].second - v[i].first) / l + ((v[i].second - v[i].first) % l ? 1 : 0);
+            ans += b;
+            idx = v[i].first + b * l;
         }
         else
         {
-            int b = (a[i].second - idx) / m + ((a[i].second - idx) % m ? 1 : 0);
-            ret += b;
-            idx = idx + b * m;
+            int b = (v[i].second - idx) / l + ((v[i].second - idx) % l ? 1 : 0);
+            ans += b;
+            idx = idx + b * l;
         }
     }
-    cout << ret << "\n";
+
+    cout << ans << endl;
+
     return 0;
 }

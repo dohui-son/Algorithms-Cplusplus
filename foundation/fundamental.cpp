@@ -287,6 +287,7 @@ int main()
     int arr2[10][10] = {{
         0,
     }};
+
     fill(&arr2[0][0], &arr2[0][0] + 10 * 10, 11); //초기화 *****
     for (int i = 0; i < 10; i++)
     {
@@ -297,6 +298,11 @@ int main()
         cout << endl;
     }
 
+    //***************복사
+    //gg를 gear[gdx][0]에서 gear[gdx][7]까지 복사해주기 --#include <algorithm>
+    //copy(&gg[0], &gg[0] + 8, &gear[gdx][0]); // 복사할 대상 시작주소,복사할대상 시작주소+데이터수, 복사되어야할 공간의 첫 주소
+    //gg에서 gear로
+    //memcpy(b, a, sizeof(b)); //배열 b에다가 a를 b크기만큼 복사해주기 #include <cstring>
     unordered_map<string, int> umap;
     umap["insert"] = 4; //입력
     umap["insert"] = 7; //값 바꾸기
