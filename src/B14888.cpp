@@ -11,8 +11,6 @@ vector<int> cal(4, 0);
 //int tmp_res = calculate(i, res, here + 1);
 int calculate(int cal_idx, int f, int num_idx)
 {
-
-    //cout << cal_idx << endl;
     int ret = 0;
     switch (cal_idx)
     {
@@ -35,7 +33,7 @@ int calculate(int cal_idx, int f, int num_idx)
 
 void go(int here, int res)
 {
-    cnt++;
+    cnt++; //이부분 매우 중요
 
     if (here == n)
     {

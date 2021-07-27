@@ -1,9 +1,29 @@
-#include <bits/stdc++.h> //주사위 윷놀이
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#define endl "\n"
 using namespace std;
+
 const int INF = 987654321;
 int a[14], mal[4], n = 10;
 int v[104];
 vector<int> adj[54];
+
+bool isMal(int mal_idx, int idx)
+{
+    if (mal_idx == 100)
+        return false;
+    for (int i = 0; i < 4; i++)
+    {
+        if (i == idx)
+            continue;
+        if (mal[i] == mal_idx)
+            return true;
+    }
+    return false;
+}
+
 int move(int here, int cnt)
 {
     if (here == 100)
@@ -35,26 +55,33 @@ int move(int here, int cnt)
     else
         return here;
 }
-bool isMal(int mal_idx, int idx)
+
+int go(int here)
 {
-    if (mal_idx == 100)
-        return false;
+    if (here == n)
+        return 0;
+    int ret = 0;
     for (int i = 0; i < 4; i++)
     {
-        if (i == idx)
+        int temp_idx = mal[i];
+        int mal_idx = move(temp_idx, a[here]);
+        if (isMal(mal_idx, i))
             continue;
-        if (mal[i] == mal_idx)
-            return true;
+        mal[i] = mal_idx;
+        ret = max(ret, go(here + 1) + v[mal_idx]);
+        mal[i] = temp_idx;
     }
-    return false;
+    return ret;
 }
+
 void add(int here, int there)
 {
     adj[here].push_back(there);
 }
+
 void setMap()
 {
-    for (int i = 0; i <= 19; i++)
+    for (size_t i = 0; i <= 19; i++)
         add(i, i + 1);
     add(5, 21);
     add(21, 22);
@@ -105,32 +132,19 @@ void setMap()
     v[30] = 27;
     v[31] = 26;
 }
-int go(int here)
-{
-    if (here == n)
-        return 0;
-    int ret = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        int temp_idx = mal[i];
-        int mal_idx = move(temp_idx, a[here]);
-        if (isMal(mal_idx, i))
-            continue;
-        mal[i] = mal_idx;
-        ret = max(ret, go(here + 1) + v[mal_idx]);
-        mal[i] = temp_idx;
-    }
-    //cout << "RET : " << ret << "\n";
-    return ret;
-}
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
     setMap();
     for (int i = 0; i < n; i++)
+    {
         cin >> a[i];
-    cout << go(0) << "\n";
+    }
+    cout << go(0) << endl;
+
     return 0;
 }
