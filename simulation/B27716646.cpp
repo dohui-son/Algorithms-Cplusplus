@@ -1,68 +1,143 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define endl '\n'
 using namespace std;
-//0 1 2 4 8
-//0 / 1 / 2 1 / 2 3 2 1 /
-const int dy[] = {0, -1, 0, 1};
-const int dx[] = {1, 0, -1, 0};
-vector<int> dragon[4][11];
-int cnt, n, x, y, d, g, a[101][101];
-void go(int x, int y, int d, int g)
+int n, xx, yy, dd, gg, ans;
+int visited[101][101], g[101][101];
+struct Input
 {
-    int _x = x;
-    int _y = y;
-    a[_x][_y] = 1;
-    for (int i = 0; i <= g; i++)
+    int y, x, d, g;
+};
+vector<Input> input;
+int dy[] = {-1, 0, 1, 0};
+int dx[] = {0, 1, 0, -1};
+
+// dragon(input[i].yy,input[i].xx,input[i].dd,input[i].gg);
+void dragon(int y, int x, int d, int g)
+{
+    vector<int> dir;
+    dir.push_back(d);
+    int ly = y, lx = x;
+
+    for (int i = 0; i < g; i++)
     {
-        for (int dir : dragon[d][i])
+        int pre = dir.size() - 1;
+        for (int i = pre; i >= 0; i--)
         {
-            _x += dx[dir];
-            _y += dy[dir];
-            a[_x][_y] = 1;
+            int ny = (dir[i] + 1) % 4 + ly;
+            int nx = (dir[i] + 1) % 4 + lx;
+            dir.push_back((dir[i] + 1) % 4);
+            visited[ny][nx] = 1;
+            ly = ny;
+            lx = nx;
         }
     }
-    return;
 }
-void makeDragon()
-{
-    for (int i = 0; i < 4; i++)
-    {
-        dragon[i][0].push_back(i);
-        dragon[i][1].push_back((i + 1) % 4);
-        for (int j = 2; j <= 10; j++)
-        {
-            int _n = dragon[i][j - 1].size();
-            for (int k = _n - 1; k >= 0; k--)
-            {
-                dragon[i][j].push_back((dragon[i][j - 1][k] + 1) % 4);
-            }
-            for (int k = 0; k < _n; k++)
-            {
-                dragon[i][j].push_back(dragon[i][j - 1][k]);
-            }
-        }
-    }
-    return;
-}
+
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
     cin >> n;
-    makeDragon();
     for (int i = 0; i < n; i++)
     {
-        cin >> x >> y >> d >> g;
-        go(x, y, d, g);
+        cin >> xx >> yy >> dd >> gg;
+        visited[xx][yy] = 1;
+        if (dd == 0)
+            dd = 1;
+        else if (dd == 1)
+            dd = 0;
+        else if (dd == 2)
+            dd = 3;
+        else if (dd == 3)
+            dd = 2;
+        input.push_back({yy, xx, dd, gg});
     }
-    for (int i = 0; i <= 100; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j <= 100; j++)
+        dragon(input[i].y, input[i].x, input[i].d, input[i].g);
+    }
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 100; j++)
         {
-            if (a[i][j] && a[i + 1][j] && a[i + 1][j + 1] && a[i][j + 1])
-                cnt++;
+            if (visited[i][j] && visited[i + 1][j] && visited[i][j + 1] && visited[i + 1][j + 1])
+                ans++;
         }
     }
-    cout << cnt << "\n";
+    cout << ans << endl;
+
     return 0;
 }
+
+/////////////////////////////////////////////////
+// #include <bits/stdc++.h>
+// using namespace std;
+// //0 1 2 4 8
+// //0 / 1 / 2 1 / 2 3 2 1 /
+// const int dy[] = {0, -1, 0, 1};
+// const int dx[] = {1, 0, -1, 0};
+// vector<int> dragon[4][11];
+// int cnt, n, x, y, d, g, a[101][101];
+// void go(int x, int y, int d, int g)
+// {
+//     int _x = x;
+//     int _y = y;
+//     a[_x][_y] = 1;
+//     for (int i = 0; i <= g; i++)
+//     {
+//         for (int dir : dragon[d][i])
+//         {
+//             _x += dx[dir];
+//             _y += dy[dir];
+//             a[_x][_y] = 1;
+//         }
+//     }
+//     return;
+// }
+// void makeDragon()
+// {
+//     for (int i = 0; i < 4; i++)
+//     {
+//         dragon[i][0].push_back(i);
+//         dragon[i][1].push_back((i + 1) % 4);
+//         for (int j = 2; j <= 10; j++)
+//         {
+//             int _n = dragon[i][j - 1].size();
+//             for (int k = _n - 1; k >= 0; k--)
+//             {
+//                 dragon[i][j].push_back((dragon[i][j - 1][k] + 1) % 4);
+//             }
+//             for (int k = 0; k < _n; k++)
+//             {
+//                 dragon[i][j].push_back(dragon[i][j - 1][k]);
+//             }
+//         }
+//     }
+//     return;
+// }
+// int main()
+// {
+//     cin >> n;
+//     makeDragon();
+//     for (int i = 0; i < n; i++)
+//     {
+//         cin >> x >> y >> d >> g;
+//         go(x, y, d, g);
+//     }
+//     for (int i = 0; i <= 100; i++)
+//     {
+//         for (int j = 0; j <= 100; j++)
+//         {
+//             if (a[i][j] && a[i + 1][j] && a[i + 1][j + 1] && a[i][j + 1])
+//                 cnt++;
+//         }
+//     }
+//     cout << cnt << "\n";
+//     return 0;
+// }
 /////////////////////////////////////////////////////////////
 // #include<iostream> ////도희 코드 --성공
 // #include<vector>
