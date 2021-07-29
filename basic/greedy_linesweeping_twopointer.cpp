@@ -1,4 +1,46 @@
-// ////B15684감시카메라
+
+
+
+
+
+
+////////////////////////////////////
+#include<iostream>
+#include<vector>
+#include <algorithm>
+#define endl "\n"
+using namespace std;
+
+int main(){
+    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+
+    return 0;
+}
+
+/////////////////////////////////////////////
+// ////B1912연속합
+// #include<iostream>
+// #include<vector>
+// #include <algorithm>
+// #define endl "\n"
+// using namespace std;
+
+// int n,sum,a,ret = -1001;
+// int main(){
+//     scanf("%d", &n);
+//     for (int i = 0; i < n; i++)
+//     {
+//         scanf("%d", &a);
+//         sum += a;
+//         ret = max(ret,sum);
+//         if(sum < 0)sum =0;
+//     }printf("%d\n",ret);
+//     return 0;
+// }
+
+
+////////////////////////////////////////////////////////////////////
+////B15684감시카메라
 // #include <iostream>
 // #include <vector>
 // #include <algorithm>
