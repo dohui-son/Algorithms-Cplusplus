@@ -2,7 +2,6 @@
 using namespace std;
 typedef long long ll;
 int t, n, m, temp;
-unordered_map<int, int> mp;
 int check(int temp, vector<int> &v)
 {
     int l = 0, r = v.size() - 1;
