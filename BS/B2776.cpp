@@ -1,36 +1,58 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#define endl "\n"
 using namespace std;
-typedef long long ll;
-int t, n, m, temp;
-int check(int temp, vector<int> &v)
+int t, n, m;
+vector<int> a;
+vector<int> b;
+
+int go(int num)
 {
-    int l = 0, r = v.size() - 1;
-    int mid;
+    int l = 0, r = a.size() - 1, mid = 0;
     while (l <= r)
     {
         mid = (l + r) / 2;
-        if (v[mid] > temp)
-            r = mid - 1;
-        else if (v[mid] == temp)
+        if (a[mid] == num)
             return 1;
-        else
+        else if (a[mid] < num)
             l = mid + 1;
+        else if (a[mid] > num)
+            r = mid - 1;
     }
     return 0;
 }
+
 int main()
 {
-    scanf("%d", &t);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cin >> t;
+    int tmp = 0;
     while (t--)
     {
-        vector<int> v;
-        scanf("%d", &n);
+        cin >> n;
         for (int i = 0; i < n; i++)
-            scanf("%d", &temp), v.push_back(temp);
-        sort(v.begin(), v.end());
-        scanf("%d", &m);
+        {
+            cin >> tmp;
+            a.push_back(tmp);
+        }
+        cin >> m;
         for (int i = 0; i < m; i++)
-            scanf("%d", &temp), cout << check(temp, v) << "\n";
+        {
+            cin >> tmp;
+            b.push_back(tmp);
+        }
+        sort(a.begin(), a.end());
+        for (int i = 0; i < b.size(); i++)
+        {
+            cout << go(b[i]) << endl;
+        }
+        a.clear();
+        b.clear();
     }
+
     return 0;
 }
