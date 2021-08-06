@@ -20,13 +20,15 @@ int main()
         ans[i].second = num;
     }
     printf("%d\n", len);
+    int l = len - 1;
+
     //for(int i = 0; i < n; i++)printf("%d %d\n", ans[i].first, ans[i].second);
     for (int i = n - 1; i >= 0; i--)
     {
-        if (ans[i].first == len - 1)
+        if (ans[i].first == l)
         {
             stk.push(ans[i].second);
-            len--;
+            l--;
         }
     }
     while (stk.size())

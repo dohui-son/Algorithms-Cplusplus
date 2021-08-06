@@ -5,7 +5,7 @@ using namespace std;
 #define endl "\n"
 
 int n;
-double psum[10001], a[10001], ret, b;
+double a[10001], ret, b;
 
 int main()
 {
