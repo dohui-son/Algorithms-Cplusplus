@@ -1,66 +1,61 @@
-// #include <bits/stdc++.h>
+#include <string>
+#include <vector>
 
-// using namespace std;
-// string ans;
-// string input;
+using namespace std;
 
-// bool chk(string a){ 
-//     int cnt = 0; 
-//     for(int i = 0; i < a.size(); i++){
-//         if(a[i] == '(') cnt++; 
-//         else cnt--; 
-//         if(cnt < 0) return false; 
-//     }
-//     return cnt == 0;
-// }
+bool check(string a)
+{
+    int cnt = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (a[i] == '(')
+            cnt++;
+        else
+            cnt--;
+        if (cnt < 0)
+            return false;
+    }
+    return cnt == 0;
+}
 
+string go(string a)
+{
+    if (check(a))
+        return a;
+    int i, cnt1 = 0, cnt2 = 0;
+    for (i = 0; i < a.size(); i++)
+    {
+        if (a[i] == '(')
+            cnt1++;
+        else
+            cnt2++;
+        if (cnt1 == cnt2)
+            break;
+    }
+    string b = a.substr(0, i + 1);
+    string c = a.substr(i + 1, a.size() - (i + 1));
+    if (check(b))
+        return b + go(c);
+    else
+    {
+        string ret = "";
+        ret += '(';
+        ret += go(c);
+        ret += ')';
+        b = b.substr(1, b.size() - 2);
+        for (int i = 0; i < b.size(); i++)
+        {
+            if (b[i] == ')')
+                ret += '(';
+            else
+                ret += ')';
+        }
+        return ret;
+    }
+}
 
-
-
-
-// string recur(string pp){
-    
-//     if(chk(pp))return pp;
-
-
-
-    
-//     string u,v;
-//     int open=0,close=0;
-
-//     if(pp[0]=='(')open++;
-//     else close++;
-//     u+=pp[0];
-
-//     int i = 1;
-//     while (i<pp.size())
-//     {
-//         if( open != close  )
-//         {
-//             if(pp[i]=='(')open++; 
-//             else close++; 
-//             u+=pp[i];
-//         }
-//         else v+=pp[i];
-//         i++;
-//     }
-//     if(!chk(u)){
-//         string ret = "";
-//         ret+='(';
-//         ret +=recur(v);
-//         ret+=')';
-//         for(int k = 1; k<u.size()-1; k++){
-//             if(u[k]=='(')ret+=')';
-//             else ret+='(';
-//         }
-//         return ret;
-//     }
-//     else return u+recur(v);    
-// }
-
-// string solution(string p) {
-//     //올바른 문자열인지 검사후 올바른 문자열이면 리턴
-//     return recur(p);
-    
-    
-// }
+string solution(string p)
+{
+    string answer = go(p);
+    return answer;
+}
