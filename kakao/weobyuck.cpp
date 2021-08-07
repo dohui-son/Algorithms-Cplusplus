@@ -1,45 +1,49 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
-#define endl "\n"
+#include <algorithm>
 using namespace std;
+#define endl "\n"
 const int INF = 987654321;
 
-vector<int> changeStartIdx(vector<int> weak, int start, int n)
+vector<int> startIdx(int start, vector<int> &w, int n)
 {
     if (start == 0)
-        return weak;
+        return w;
+    vector<int> ret;
+    for (int i = start; i < w.size(); i++)
+        ret.push_back(w[i]);
+    for (int i = 0; i < start; i++)
+        ret.push_back(w[i] + n);
+    return ret;
 }
 
 int solution(int n, vector<int> weak, vector<int> dist)
 {
-    int ret = INF;
+    int ans = INF;
     sort(dist.begin(), dist.end());
     do
     {
-        for (int j = 0; j < weak.size(); j++)
+        for (int i = 0; i < weak.size(); i++)
         {
-            vector<int> _weak = changeStartIdx(weak, j, n);
-            int idx = 0;
-            int curr = _weak[0] + dist[0];
-            bool flag = 0;
-            for (int i = 1; i < _weak.size(); i++)
+            vector<int> _weak = startIdx(i, weak, n);
+            int idx = 0, cur = _weak[0] + dist[0], flag = 0;
+            for (int j = 1; j < _weak.size(); i++)
             {
-                if (_weak[i] > curr)
+                if (cur < _weak[j])
                 {
                     if (idx + 1 == dist.size())
                     {
                         flag = 1;
                         break;
                     }
-                    curr = _weak[i] + dist[++idx];
+                    cur = _weak[j] + dist[++idx];
                 }
             }
+            if (!flag)
+                ans = min(ans, idx + 1);
         }
-        if (!flag)
-            ret = min(ret, idx + 1);
-
     } while (next_permutation(dist.begin(), dist.end()));
+    return (ans == INF ? -1 : ans);
 }
 
 // #include <bits/stdc++.h>
