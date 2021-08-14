@@ -15,7 +15,7 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cin >> n;
-    vector<pair<int, int>> v;
+    vector<pair<int, int> > v;
     for (int i = 0; i < n; i++)
     {
         cin >> from >> to;
@@ -41,7 +41,7 @@ ll n, k, ret, temp1, temp;
 int main()
 {
     cin >> n >> k;
-    vector<pair<ll, ll>> v(n);
+    vector<pair<ll, ll> > v(n);
     vector<ll> vv(k);
     for (int i = 0; i < n; i++)
     {
@@ -102,7 +102,59 @@ int main()
         printf("%.3lf\n", i);
     return 0;
 }
-//[라인스]
+//[라인스위핑]
+typedef pair<int, int> P;
+P L[1000004];
+int n, from, to, l, r, ret;
+int main()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> from >> to;
+        L[i] = P(from, to);
+    }
+    sort(L, L + n);
+    l = L[0].first;
+    r = L[0].second;
+    for (int i = 1; i < n; i++)
+    {
+        if (r < L[i].first)
+        {
+            ret += (r - l);
+            l = L[i].first;
+            r = L[i].second;
+        }
+        else if (L[i].first <= r && L[i].second >= r)
+        {
+            r = L[i].second;
+        }
+    }
+    ret += r - l;
+    cout << ret << '\n';
+}
+//[5투인터]두수의 합
+int n, ret, x;
+int main()
+{
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    cin >> x;
+    sort(a.begin(), a.end());
+    int l = 0, r = n - 1;
+    while (l < r)
+    {
+        if (a[l] + a[r] == x)
+            r--, ret++;
+        else if (a[l] + a[r] > x)
+            r--;
+        else if (a[l] + a[r] < x)
+            l++;
+    }
+    cout << ret << "\n";
+}
 
 //6주차 - 이분탐색/LIS(최대증가부분수열)
 //[이분탐색BS]용돈관리
