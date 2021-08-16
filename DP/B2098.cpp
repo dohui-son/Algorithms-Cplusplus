@@ -9,18 +9,14 @@ const int INF = 987654321;
 int n, dp[MAX_N][1 << MAX_N], dist[MAX_N][MAX_N];
 int go(int here, int visited)
 {
-    if (visited == (1 << n) - 1)
-        return dist[here][0] ? dist[here][0] : INF;
+    if (visited == (1 << n) - 1) return dist[here][0] ? dist[here][0] : INF;
     int &ret = dp[here][visited];
-    if (ret != -1)
-        return ret;
+    if (ret != -1) return ret;
     ret = INF;
     for (int i = 0; i < n; i++)
     {
-        if (visited & (1 << i))
-            continue;
-        if (dist[here][i] == 0)
-            continue;
+        if (visited & (1 << i)) continue;
+        if (dist[here][i] == 0) continue;
         ret = min(ret, go(i, visited | (1 << i)) + dist[here][i]);
     }
 }
@@ -39,8 +35,6 @@ int main()
             cin >> dist[i][j];
         }
     }
-
     cout << go(0, 1) << endl;
-
     return 0;
 }
