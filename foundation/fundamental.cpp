@@ -68,7 +68,7 @@ struct cmp
 
 int main()
 {
-    cout << "priority queue 에 int 외에 다른 구조체가 들어갈때" << endl;
+    cout << " queue 에 int 외에 다른 구조체가 들어갈때" << endl;
     priority_queue<Point> pq_struct;
     pq_struct.push({1, 10});
     pq_struct.push({2, 3});
