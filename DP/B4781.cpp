@@ -8,11 +8,14 @@ int main()
     {
         int n, m1, m2;
         scanf("%d %d.%d", &n, &m1, &m2);
+        printf("%d\n", m1);
+        printf("%d\n", m2);
+
         if (n == 0)
             break;
         int cost = m1 * 100 + m2;
         int dp[cost + 1];
-        memset(dp, 0, sizeof(dp));
+        memset(dp, 0, sizeof(dp)); // fill(&dp[0],&dp[0]+cost+1,0);
         for (int i = 0; i < n; i++)
         {
             int c;
