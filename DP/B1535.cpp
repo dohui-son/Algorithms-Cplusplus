@@ -1,21 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-int n, dp[101], cost[101], happy[101];
+int n, cost[101], happy[101];
+vector<int> dp(101);
 double temp;
 int main()
 {
-    scanf("%d", &n);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", &cost[i]);
+    {
+        cin >> cost[i];
+    }
     for (int i = 0; i < n; i++)
-        scanf("%d", &happy[i]);
+    {
+        cin >> happy[i];
+    }
     for (int i = 0; i < n; i++)
     {
         for (int j = 100; j > cost[i]; j--)
-        {
-            dp[j] = std::max(dp[j], dp[j - cost[i]] + happy[i]);
-        }
+            dp[j] = max(dp[j], dp[j - cost[i]] + happy[i]);
     }
-    printf("%d\n", dp[100]);
+    cout << dp[100] << endl;
+
     return 0;
 }
