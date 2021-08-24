@@ -1,1 +1,11 @@
 ./run.sh ./ src/B파일이름.cpp 아무글자
+
+
+git push origin "featur/logout"
+git push origin dev
+깃 크라켄
+
+
+stdc++.h 위치
+-->
+/Library/Developer/CommandLineTools/usr/include/bits/stdc++.h

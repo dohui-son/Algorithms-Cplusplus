@@ -1,9 +1,12 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 int n, m, c, y, x, a[51][51], dp[51][51][51][51];
 const int mod = 1000007;
 int go(int y, int x, int cnt, int prev)
 {
+
     if (y > n || x > m)
         return 0;
     if (y == n && x == m)
@@ -28,15 +31,11 @@ int go(int y, int x, int cnt, int prev)
     }
     return ret;
 }
-void fastIO()
+int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-}
-int main()
-{
-    fastIO();
     memset(dp, -1, sizeof(dp));
     cin >> n >> m >> c;
     for (int i = 1; i <= c; i++)
