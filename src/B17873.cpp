@@ -132,7 +132,7 @@ int main()
                 }
             }
         }
-        if (flag)
+        if (flag || ans > 1000)
             break;
     }
     if (ans > 1000)
