@@ -1,25 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define endl "\n"
-
-int64_t a, b, aa, bb, ans = 987654321;
-int64_t dp[100002][100002];
-
-//기저사례//로직//메모자이제이션//초기화
-
-int64_t go(int aaa, int bbb, int cnt)
+int a, b, c, d;
+queue<pair<int, int> > q;
+map<pair<int, int>, int> m;
+void enque(int x, int y, int cnt)
 {
-    if (aaa == aa && bbb == bb)
-    {
-        ans = min(ans, cnt);
-        return cnt;
-    }
-    if (aaa < 0 || bbb < 0 || aaa > aa || bbb > bb)
-        return -1e9;
+    if (m[{x, y}])
+        return;
+    q.push({x, y});
+    m[{x, y}] = cnt + 1;
+}
 
-    int64_t &ret = dp[aaa][bbb];
-    if (~ret)
-        return ret;
+int bfs(int x, int y)
+{
+    m[{x, y}] = 1;
+    q.push({x, y});
+    while (!q.empty())
+    {
+        x = q.front().first;
+        y = q.front().second;
+        q.pop();
+
+        enque(x, 0, m[{x, y}]);
+        enque(0, y, m[{x, y}]);
+        enque(a, y, m[{x, y}]);
+        enque(x, b, m[{x, y}]);
+        enque(max(0, x + y - b), min(b, x + y), m[{x, y}]); //a -> b
+        enque(min(x + y, a), max(0, x + y - a), m[{x, y}]); // b - > a
+    }
+    if (m[{c, d}])
+        return m[{c, d}] - 1;
+    else
+        return -1;
 }
 
 int main()
@@ -27,13 +40,8 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    memset(dp, -1, sizeof(dp));
-    cin >> a >> b >> aa >> bb;
-    dp[0][0] = 0;
-    dp[aa][0] = 1;
-    dp[0][bb] = 1;
-    min(go(aa, 0, 1), go(0, bb, 1));
-    cout << ans << endl;
+    cin >> a >> b >> c >> d;
+    cout << bfs(0, 0) << endl;
 
     return 0;
 }
