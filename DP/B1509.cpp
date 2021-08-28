@@ -6,6 +6,21 @@ int dp[2504][2504], dp2[2504];
 const int INF = 9876543321;
 string s;
 
+int go(int here)
+{
+    if (here == s.size())
+        return 0;
+    if (dp2[here] != INF)
+        return dp2[here];
+    int &ret = dp2[here];
+    for (int i = 1; here + i <= s.size(); i++)
+    {
+        if (dp[here][i])
+            ret = min(ret, go(here + i) + 1);
+    }
+    return ret;
+}
+
 int main()
 {
     ios::sync_with_stdio(false);
