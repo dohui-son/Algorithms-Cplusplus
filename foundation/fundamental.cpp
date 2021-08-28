@@ -1,3 +1,4 @@
+//#include <bits/stdc++.h>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -8,7 +9,7 @@
 #include <set>
 #include <stack>
 #include <queue>
-
+//부동소수점(실수)이기 때문에 == 연산자체가 안먹혀서 >이거로 해야함
 using namespace std;
 #define endl "\n"
 
