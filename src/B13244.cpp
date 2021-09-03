@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <vector>
 using namespace std;
+//dfs
 int t, n, m, a, b, visited[1004], cnt;
 vector<int> adj[1004];
 void dfs(int here)
