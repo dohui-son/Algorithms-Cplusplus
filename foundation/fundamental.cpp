@@ -313,6 +313,16 @@ int main()
     cout << umap["2"] << endl;
     cout << umap.size() << endl;
 
+    //map을 key가 아닌 value기준으로 정렬해보기
+    // bool cmp(const pp& a, const pp& b) {
+    // 	if (a.second == b.second) return a.first < b.first;
+    // 	return a.second < b.second;
+    // }
+    map<int, int> map_;
+    vector<pair<int, int> >
+        vec(map_.begin(), map_.end());
+    sort(vec.begin(), vec.end(), cmp);
+
     map<string, int> m;                    //자동정렬 , 기본 오름차순
     map<int, int, greater<int> > greaterm; //내림차순
     m["map"]++;                            //처음에 입력하고 바로 값 넣기

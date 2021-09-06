@@ -26,9 +26,7 @@ void spring_summer()
                     a[i][j] -= tt;
                 }
                 else
-                {
                     dead += (tt / 2);
-                }
             }
             trees[i][j].clear();
             trees[i][j] = tmp;
@@ -94,9 +92,7 @@ int main()
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
-        {
             ans += trees[i][j].size();
-        }
     }
     cout << ans << "\n";
 
