@@ -319,8 +319,7 @@ int main()
     // 	return a.second < b.second;
     // }
     map<int, int> map_;
-    vector<pair<int, int> >
-        vec(map_.begin(), map_.end());
+    vector<pair<int, int> > vec(map_.begin(), map_.end());
     sort(vec.begin(), vec.end(), cmp);
 
     map<string, int> m;                    //자동정렬 , 기본 오름차순

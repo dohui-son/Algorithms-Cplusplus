@@ -1,74 +1,139 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <map>
-
+// #include <iostream>
+// #include <vector>
+// #include <algorithm>
+// #include <cstring>
+// #include <functional>
+#include <bits/stdc++.h>
 using namespace std;
-#define endl "\n"
-int R, C, K, ans, rs, cs;
-vector<vector<int> > a(3, vector<int>(3, 0));
-vector<int> rsize(3, 3);
-vector<int> csize(3, 3);
 
-void csort() {}
-void rsort()
+const int MAX = 100;
+
+int r, c, k;
+int A[MAX][MAX];
+
+int main(void)
 {
-    for (int i = 0; i < a.size(); i++)
-    {
-        int zero_idx = min_element(a[i].begin(), a[i].end()) - a[i].begin();
-        cout << zero_idx << endl;
-        sort(a[i].begin(), a[i].begin() + zero_idx - 1); ////////////-1빼야하나????
-        map<int, int> m;
-        vector<pair<int, int> > cnt(101, {0, 0});
-        for (int j = 0; j < zero_idx; j++)
-        {
-            m[a[i][j]]++;
-            cout << "here" << endl;
-            cnt[a[i][j]] = {m[a[i][j]], a[i][j]};
-
-            /* code */
-        }
-
-        cout << "zero" << zero_idx << endl;
-    }
-}
-
-int main()
-{
-    ios::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    cin >> R >> C >> K;
+    cin >> r >> c >> k;
+    r -= 1, c -= 1;
+
+    int time = 0;
+    bool flag = false;
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            cin >> a[i][j];
+            int num;
+            cin >> num;
+
+            A[i][j] = num;
+            if (i == r && j == c && num == k)
+                flag = true;
         }
     }
 
-    R--, C--;
-    while (ans < 100)
+    int row = 3, col = 3;
+    while (!flag)
     {
-        if (a[R][C] == K)
-            break;
-        rs = *max_element(rsize.begin(), rsize.end());
-        cs = *max_element(csize.begin(), csize.end());
-        if (rs - cs >= 0)
-        { //r정렬
-            rsort();
+        time++;
+        if (time > MAX)
+        {
+            cout << -1 << "\n";
+            return 0;
         }
+
+        vector<pair<int, int> > v[MAX];
+        //R
+        if (row >= col)
+        {
+            for (int i = 0; i < row; i++)
+            {
+                int cnt[MAX + 1] = {
+                    0,
+                };
+                //각 열 숫자 개수 파악
+                for (int j = 0; j < col; j++)
+                    cnt[A[i][j]]++;
+
+                //v[i]는 i번째 열에 나타난 {숫자 등장 횟수, 숫자}
+                for (int j = 1; j <= MAX; j++)
+                    if (cnt[j])
+                        v[i].push_back({cnt[j], j});
+            }
+
+            for (int i = 0; i < row; i++)
+                for (int j = 0; j < col; j++)
+                    A[i][j] = 0;
+
+            //{숫자 등장 횟수, 숫자}를 기준으로 오름차순
+            for (int i = 0; i < row; i++)
+                sort(v[i].begin(), v[i].end());
+
+            for (int i = 0; i < row; i++)
+            {
+                int tempIdx = 0;
+                for (int j = 0; j < v[i].size(); j++)
+                {
+                    A[i][tempIdx++] = v[i][j].second;
+                    if (tempIdx == MAX)
+                        break;
+                    A[i][tempIdx++] = v[i][j].first;
+                    if (tempIdx == MAX)
+                        break;
+                }
+                col = max(col, tempIdx);
+            }
+        }
+        //C
         else
-        { //c 정렬
-            csort();
+        {
+            for (int i = 0; i < col; i++)
+            {
+                int cnt[MAX + 1] = {
+                    0,
+                };
+                //각 행 숫자 파악
+                for (int j = 0; j < row; j++)
+                    cnt[A[j][i]]++;
+
+                //v[i]는 각 행에 등장한 {숫자 등장횟수, 숫자}
+                for (int j = 1; j <= MAX; j++)
+                    if (cnt[j])
+                        v[i].push_back({cnt[j], j});
+            }
+
+            for (int i = 0; i < row; i++)
+                for (int j = 0; j < col; j++)
+                    A[i][j] = 0;
+
+            //{숫자 등장 횟수, 숫자}를 기준으로 오름차순
+            for (int i = 0; i < col; i++)
+                sort(v[i].begin(), v[i].end());
+
+            for (int i = 0; i < col; i++)
+            {
+                int tempIdx = 0;
+                for (int j = 0; j < v[i].size(); j++)
+                {
+                    A[tempIdx++][i] = v[i][j].second;
+                    if (tempIdx == MAX)
+                        break;
+                    A[tempIdx++][i] = v[i][j].first;
+                    if (tempIdx == MAX)
+                        break;
+                }
+                row = max(row, tempIdx);
+            }
         }
 
-        ans++;
+        if (A[r][c] == k)
+        {
+            flag = true;
+            break;
+        }
     }
-    if (ans >= 100)
-        cout << -1 << endl;
-    else
-        cout << ans << endl;
-
+    cout << time << "\n";
     return 0;
 }
