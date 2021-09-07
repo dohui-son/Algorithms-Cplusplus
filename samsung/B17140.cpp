@@ -1,139 +1,77 @@
-// #include <iostream>
-// #include <vector>
-// #include <algorithm>
-// #include <cstring>
-// #include <functional>
-#include <bits/stdc++.h>
+#include<stdio.h>
+int main(){
+	int r, c, k, A[100][100]={0, }, B[101];
+	scanf("%d %d %d", &r, &c, &k);
+	for(int i=0;i<3;++i)for(int j=0;j<3;++j)	scanf("%d", &A[i][j]);
+	int time=0;
+	--r, --c;
+	int ns, s=3, m=0;
+	while(A[r][c]!=k && time<101){
+		++time;
+		ns=0;
+		for(int i=0;i<s;++i){
+			for(int j=0;j<101;++j)	B[j]=0;
+			int M=0, L=0;
+			for(int j=0;j<100;++j){
+				if(!m && A[i][j]){
+					B[A[i][j]]++;
+					if(M<A[i][j])	M=A[i][j];
+					if(L<B[A[i][j]])	L=B[A[i][j]];
+				}else if(m && A[j][i]){
+					B[A[j][i]]++;
+					if(M<A[j][i])	M=A[j][i];
+					if(L<B[A[j][i]])	L=B[A[j][i]];
+				}
+			}
+			int idx=0;
+			for(int k=1;k<=L;++k){
+				for(int j=1;j<=M;++j){
+					if(B[j]==k){
+						if(m) A[idx++][i]=j;A[idx++][i]=k;
+						else A[i][idx++]=j;A[i][idx++]=k;
+					}
+				}
+			}
+			if(idx>ns)	ns=idx;
+			for(int j=idx;j<s;++j){
+				if(m) A[j][i]=0;
+				else	A[i][j]=0;
+			}
+		}
+		if(s==ns)	m=0;
+		else if(s<ns && !m)	m=1, s=ns;
+		else if(s<ns && m)	m=0, s=ns;
+	}
+	if(time>100)	printf("-1\n");
+	else printf("%d\n", time);
+}
+
+
+
+
+
+#define pp pair<int,int>
+
 using namespace std;
 
-const int MAX = 100;
+map<int, int> m;
 
-int r, c, k;
-int A[MAX][MAX];
 
-int main(void)
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    cin >> r >> c >> k;
-    r -= 1, c -= 1;
 
-    int time = 0;
-    bool flag = false;
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            int num;
-            cin >> num;
+void Map_Setting() {
+	for (int i = 0; i < 1; ++i) m[1]++;
+	for (int i = 0; i < 5; ++i) m[2]++;
+	for (int i = 0; i < 3; ++i) m[3]++;
+}
 
-            A[i][j] = num;
-            if (i == r && j == c && num == k)
-                flag = true;
-        }
-    }
-
-    int row = 3, col = 3;
-    while (!flag)
-    {
-        time++;
-        if (time > MAX)
-        {
-            cout << -1 << "\n";
-            return 0;
-        }
-
-        vector<pair<int, int> > v[MAX];
-        //R
-        if (row >= col)
-        {
-            for (int i = 0; i < row; i++)
-            {
-                int cnt[MAX + 1] = {
-                    0,
-                };
-                //각 열 숫자 개수 파악
-                for (int j = 0; j < col; j++)
-                    cnt[A[i][j]]++;
-
-                //v[i]는 i번째 열에 나타난 {숫자 등장 횟수, 숫자}
-                for (int j = 1; j <= MAX; j++)
-                    if (cnt[j])
-                        v[i].push_back({cnt[j], j});
-            }
-
-            for (int i = 0; i < row; i++)
-                for (int j = 0; j < col; j++)
-                    A[i][j] = 0;
-
-            //{숫자 등장 횟수, 숫자}를 기준으로 오름차순
-            for (int i = 0; i < row; i++)
-                sort(v[i].begin(), v[i].end());
-
-            for (int i = 0; i < row; i++)
-            {
-                int tempIdx = 0;
-                for (int j = 0; j < v[i].size(); j++)
-                {
-                    A[i][tempIdx++] = v[i][j].second;
-                    if (tempIdx == MAX)
-                        break;
-                    A[i][tempIdx++] = v[i][j].first;
-                    if (tempIdx == MAX)
-                        break;
-                }
-                col = max(col, tempIdx);
-            }
-        }
-        //C
-        else
-        {
-            for (int i = 0; i < col; i++)
-            {
-                int cnt[MAX + 1] = {
-                    0,
-                };
-                //각 행 숫자 파악
-                for (int j = 0; j < row; j++)
-                    cnt[A[j][i]]++;
-
-                //v[i]는 각 행에 등장한 {숫자 등장횟수, 숫자}
-                for (int j = 1; j <= MAX; j++)
-                    if (cnt[j])
-                        v[i].push_back({cnt[j], j});
-            }
-
-            for (int i = 0; i < row; i++)
-                for (int j = 0; j < col; j++)
-                    A[i][j] = 0;
-
-            //{숫자 등장 횟수, 숫자}를 기준으로 오름차순
-            for (int i = 0; i < col; i++)
-                sort(v[i].begin(), v[i].end());
-
-            for (int i = 0; i < col; i++)
-            {
-                int tempIdx = 0;
-                for (int j = 0; j < v[i].size(); j++)
-                {
-                    A[tempIdx++][i] = v[i][j].second;
-                    if (tempIdx == MAX)
-                        break;
-                    A[tempIdx++][i] = v[i][j].first;
-                    if (tempIdx == MAX)
-                        break;
-                }
-                row = max(row, tempIdx);
-            }
-        }
-
-        if (A[r][c] == k)
-        {
-            flag = true;
-            break;
-        }
-    }
-    cout << time << "\n";
-    return 0;
+bool cmp(const pp& a, const pp& b) {
+	if (a.second == b.second) return a.first < b.first;
+	return a.second < b.second;
+}
+int main() {
+    //map을 key가 아닌 value기준으로 정렬해보기
+	Map_Setting();
+	vector<pair<int,int>> vec( m.begin(), m.end() );
+	sort(vec.begin(), vec.end(), cmp);
+	return 0;
 }
