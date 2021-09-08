@@ -52,7 +52,6 @@ void Spread_Virus(queue<pair<int, int> > Q)
                     {
                         Infect_Place++;
                         Total_Time = Time[nx][ny];
-                        cout << "TT" << Total_Time << endl;
                     }
                     Q.push(make_pair(nx, ny));
                 }
