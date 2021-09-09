@@ -2,17 +2,16 @@
 using namespace std;
 
 int64_t ans, n, arr[27];
-vector<long long> v;
+vector<int64_t> v;
 string str;
-int value = 9;
-
+int val = 9;
+//ABC + BCD 인 경우는 A 100개, B 10+100개, C 1+10개, D 1개 있는 것
 int main()
 {
     ios_base::sync_with_stdio(false);
     cout.tie(NULL);
     cin.tie(NULL);
     cin >> n;
-    // 글자를 개수 생각해서 저장
     for (int i = 0; i < n; ++i)
     {
         cin >> str;
@@ -23,18 +22,14 @@ int main()
             cnt *= 10;
         }
     }
-    // 각 글자수를 sort
     for (int i = 0; i < 27; ++i)
-        if (arr[i] != 0)
-            v.push_back(arr[i]);
+        if (arr[i] != 0) v.push_back(arr[i]);
     sort(v.begin(), v.end());
-
     for (int i = v.size() - 1; i >= 0; i--)
     {
-        ans += v[i] * value;
-        value--;
+        ans += v[i] * val;
+        val--;
     }
     cout << ans << '\n';
-
     return 0;
 }
