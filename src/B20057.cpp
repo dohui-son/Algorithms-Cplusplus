@@ -24,17 +24,8 @@ void go(int dir, int kan)
         y = dy[dir] + y;
         x = dx[dir] + x;
 
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                cout << g[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
         int a = g[y][x];
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 10; i++)
         {
             if (dir == 0)
             {
@@ -60,24 +51,24 @@ void go(int dir, int kan)
             int nx = x + xx;
             if (ny < 0 || nx < 0 || ny >= n || nx >= n)
             {
-                if (i == 10)
+                if (i == 9)
                 {
                     ans += a;
                     break;
                 }
-                a -= (g[y][x] * spread[i] / 100);
                 ans += (g[y][x] * spread[i] / 100);
             }
             else
             {
-                if (i == 10)
+                if (i == 9)
                 {
                     g[ny][nx] += a;
                     break;
                 }
-                a -= (g[y][x] * spread[i] / 100);
+
                 g[ny][nx] += (g[y][x] * spread[i] / 100);
             }
+            a -= (g[y][x] * spread[i] / 100);
         }
     }
     g[y][x] = 0;
