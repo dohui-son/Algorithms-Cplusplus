@@ -67,6 +67,17 @@ struct cmp
     bool operator()(Ppoint a, Ppoint b) { return a.x < b.x; }
 }; //오름차순---가장 큰 수가 top (default와 같다)
 
+bool compare(const int &a, const int &b)
+{
+    return b <= a; //custom sort 내림차순
+}
+bool compare2(const pair<int, int> &a, const pair<int, int> &b)
+{
+    if (b.first == a.first)
+        return b.second <= a.second;
+    return b.first < a.first;
+} // vector<pair<int,int>> 기준 sort 내림차순
+
 int main()
 {
     cout << " queue 에 int 외에 다른 구조체가 들어갈때" << endl;
@@ -91,7 +102,7 @@ int main()
     cout << "custom pq (default와 같음) y  " << pq.top().y << endl; //4
 
     //priority_queue 다익스트라, 그리디
-    priority_queue<int, vector<int>, greater<int> > pq_greater; //greater내림차순 - 가장 작은 top
+    priority_queue<int, vector<int>, greater<int>> pq_greater; //greater내림차순 - 가장 작은 top
     pq_greater.push(2);
     pq_greater.push(0);
     cout << "greater 내림차순 -- pq.top은 가장 작은수  " << pq_greater.top() << endl;
@@ -99,6 +110,22 @@ int main()
     default_pq.push(2);
     default_pq.push(0);
     cout << "default pq -- pq.top은 가장 큰 수  " << default_pq.top() << endl;
+
+    //sort 내림차순
+    //     bool compare(const int &a,const int & b){
+    //     return b <= a; //custom sort 내림차순
+    // }
+    vector<int> for_sort = {90, 4, 39, 7, 5, 9, 3, 4, 7, 58, 9, 34};
+    sort(for_sort.begin(), for_sort.end(), compare);
+    //디폴트 vector<pair<int,int>> v 벡터의 sort ==> 첫번째 인자 기준 정렬 + 동일할시 두번째 것 기준 정렬
+    //     bool compare2(pair<int, int> &a,pair<int, int> &b)// vector<pair<int,int>> 기준 sort 내림차순
+    // {
+    //     if (b.first == a.first)
+    //         return b.second <= a.second;
+    //     return b.first < a.first;
+    // }
+    vector<pair<int, int>> vect_p;
+    sort(vect_p.begin(), vect_p.end(), compare2);
 
     char s[50] = {
         0,
@@ -319,12 +346,12 @@ int main()
     // 	return a.second < b.second;
     // }
     map<int, int> map_;
-    vector<pair<int, int> > vec(map_.begin(), map_.end());
+    vector<pair<int, int>> vec(map_.begin(), map_.end());
     sort(vec.begin(), vec.end(), cmp);
 
-    map<string, int> m;                    //자동정렬 , 기본 오름차순
-    map<int, int, greater<int> > greaterm; //내림차순
-    m["map"]++;                            //처음에 입력하고 바로 값 넣기
+    map<string, int> m;                   //자동정렬 , 기본 오름차순
+    map<int, int, greater<int>> greaterm; //내림차순
+    m["map"]++;                           //처음에 입력하고 바로 값 넣기
     cout << m["map"] << endl;
     m["amap"] = 2; //처음 입력
     for (auto i : m)
@@ -353,8 +380,8 @@ int main()
         cout << "m is cleared" << endl;
 
     // 중복요소는 없고 오로지 유닉한 값만 저장 + 오름차순 자동정렬
-    set<pair<string, int> > se;
-    set<int, greater<int> > setgreater; // 내림차순
+    set<pair<string, int>> se;
+    set<int, greater<int>> setgreater; // 내림차순
     for (int i = 0; i < 6; i++)
     {
         se.insert({"set1", i});
@@ -372,7 +399,7 @@ int main()
 
     multiset<int> ms; //오름차순, 중복가능 O
     multiset<char> msc;
-    multiset<int, greater<int> > msgreater; //내림차순
+    multiset<int, greater<int>> msgreater; //내림차순
     for (int i = 0; i < 7; i++)
     {
         ms.insert(i);
