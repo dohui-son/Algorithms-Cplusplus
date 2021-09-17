@@ -1,103 +1,86 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <deque>
-#define endl "\n"
-using namespace std;
-typedef long long ll;
-#define time ff
-#define y1 cc
 
-int n, k, l, y, x, t, ret, idx, dir = 1;
-int a[104][104], visited[104][104], time;
-char c;
-deque<pair<int, int> > dq;
-vector<pair<int, int> > _time;
-const int dy[] = {-1, 0, 1, 0};
-const int dx[] = {0, 1, 0, -1};
+#include <iostream> //숏코딩
+#include <cstring>
+using namespace std;
+int ch[101][101], x = 1, y = 1, n, t = 0, apple = 1;
+bool ap[101][101];
+const int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
+
+void move(int d)
+{
+    t++;
+    int nx = x + dx[d], ny = y + dy[d];
+    if (nx < 1 || ny < 1 || nx > n || ny > n)
+    {
+        cout << t;
+        exit(0);
+    }
+    if (ch[nx][ny] != -1 && t - ch[nx][ny] <= apple)
+    {
+        cout << t;
+        exit(0);
+    }
+    ch[nx][ny] = t;
+    if (ap[nx][ny] == 1)
+    {
+        apple++;
+        ap[nx][ny] = 0;
+    }
+    x = nx, y = ny;
+}
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
+    memset(ch, -1, sizeof(ch));
+    int i, k, l, d = 0;
     cin >> n >> k;
-    for (int i = 0; i < k; i++)
+    for (i = 0; i < k; i++)
     {
-        cin >> y >> x;
-        a[--y][--x] = 1;
+        int a, b;
+        cin >> a >> b;
+        ap[a][b] = 1;
     }
     cin >> l;
-    for (int i = 0; i < l; i++)
+    ch[1][1] = 0;
+    while (l--)
     {
-        cin >> t >> c;
-        if (c == 'D')
-            _time.push_back({t, 1});
-        else
-            _time.push_back({t, 3});
+        int a;
+        char b;
+        cin >> a >> b;
+        while (t < a)
+            move(d);
+        if (b == 'D')
+            d = (d + 1) % 4;
+        else if (b == 'L')
+            d = (d + 3) % 4;
     }
-    dq.push_back({0, 0});
-    visited[0][0] = 1;
-    while (dq.size())
-    {
-        time++;
-        tie(y, x) = dq.front();
-        int ny = y + dy[dir];
-        int nx = x + dx[dir];
-        if (ny < 0 || nx < 0 || ny >= n || nx >= n || visited[ny][nx])
-            break;
-        if (!a[ny][nx])
-        {
-            visited[dq.back().first][dq.back().second] = 0;
-            dq.pop_back();
-        }
-        else
-            a[ny][nx] = 0;
-        visited[ny][nx] = 1;
-        dq.push_front({ny, nx});
-        if (time == _time[idx].first)
-        {
-            dir = (dir + _time[idx].second) % 4;
-            idx++;
-        }
-    }
-    cout << time << endl;
-    return 0;
+    while (1)
+        move(d);
 }
-
-// ////도희 버전
-// #include <iostream>
-// #include <vector>
-// #include <deque>
-// #include <algorithm>
-// #define endl '\n'
+// //내 답 -->맞음
+// #include <bits/stdc++.h>
 // using namespace std;
 
-// int n, k, l, ans, idx, r, c;
-// vector<pair<int, int> > cmd;
-// vector<vector<int> > g;
-// int dx[] = {0, 1, 0, -1};
-// int dy[] = {-1, 0, 1, 0};
-// char tmp;
+// int n, k, l, g[102][102], dir = 1;
+// deque<pair<int, int> > dq;
+// queue<pair<int, int> > ll;
+// const int dy[] = {-1, 0, 1, 0};
+// const int dx[] = {0, 1, 0, -1};
 
-// struct Bam
+// bool go()
 // {
-//     deque<pair<int, int> > dq;
-//     int d;
-// };
-// bool go(Bam &b)
-// { //게임 끝나면 true를 리턴하기
-//     int ny = dy[b.d] + b.dq.front().first;
-//     int nx = dx[b.d] + b.dq.front().second;
-//     if (ny < 0 || nx < 0 || ny >= n || nx >= n)
+//     //game over == return true;
+//     int ny = dy[dir] + dq.front().first;
+//     int nx = dx[dir] + dq.front().second;
+//     if (ny < 0 || nx < 0 || ny >= n || nx >= n || g[ny][nx] == 1)
 //         return true;
-//     if (g[ny][nx] == 1)
-//         return true;
-//     if (g[ny][nx] == 0)
+//     dq.push_front({ny, nx});
+//     if (g[ny][nx] == 2)
 //     {
-//         g[b.dq.back().first][b.dq.back().second] = 0;
-//         b.dq.pop_back();
+//         g[ny][nx] = 1;
+//         return false;
 //     }
-//     b.dq.push_front({ny, nx});
+//     g[dq.back().first][dq.back().second] = 0;
+//     dq.pop_back();
 //     g[ny][nx] = 1;
 //     return false;
 // }
@@ -108,40 +91,43 @@ int main()
 //     cin.tie(nullptr);
 //     cout.tie(nullptr);
 //     cin >> n >> k;
-//     g = vector<vector<int> >(n + 1, vector<int>(n, 0));
-//     g[0][0] = 1;
+//     int tmp1 = 0, tmp2 = 0;
+//     char tmp3 = '\0';
 //     for (int i = 0; i < k; i++)
 //     {
-//         cin >> r >> c;
-//         g[--r][--c] = 2;
+//         cin >> tmp1 >> tmp2;
+//         tmp1--, tmp2--;
+//         g[tmp1][tmp2] = 2;
 //     }
 //     cin >> l;
-//     cmd = vector<pair<int, int> >(l);
+//     g[0][0] = 1;
 //     for (int i = 0; i < l; i++)
 //     {
-//         cin >> r >> tmp;
-//         cmd[i].first = r;
-//         if (tmp == 'L')
-//             cmd[i].second = 3; // 왼쪽이면 0
+//         cin >> tmp1 >> tmp3;
+//         if (tmp3 == 'L')
+//             tmp2 = -1;
 //         else
-//             cmd[i].second = 1;
+//             tmp2 = 1;
+//         ll.push({tmp1, tmp2});
 //     }
-//     r = 0;
-//     Bam b;
-//     b.dq.push_front({0, 0});
-//     g[0][0] = 1;
-//     b.d = 1;
+//     dq.push_back({0, 0});
+//     int time = 0;
 //     while (1)
 //     {
-//         ans++;
-//         if (go(b))
+//         time++;
+//         if (go())
 //             break;
-//         if (ans == cmd[idx].first)
+
+//         if (ll.front().first == time)
 //         {
-//    b.d = (b.d+cmd[idx].second) % 4;
-//             idx++;
+//             dir += ll.front().second;
+//             if (dir < 0)
+//                 dir += 4;
+//             dir %= 4;
+//             ll.pop();
 //         }
 //     }
-//     cout << ans << endl;
+//     cout << time << "\n";
+
 //     return 0;
 // }
