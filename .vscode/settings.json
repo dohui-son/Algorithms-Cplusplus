@@ -69,7 +69,8 @@
     "unordered_set": "cpp",
     "__tuple": "cpp",
     "functional": "cpp",
-    "__functional_base": "cpp"
+    "__functional_base": "cpp",
+    "__nullptr": "cpp"
   }
   
 }
