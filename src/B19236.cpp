@@ -36,6 +36,7 @@ bool fishmove(vector<vector<int> > &g, vector<int> &fdir, vector<pair<int, int> 
                 fyx[g[y][x]].first = y;
                 fyx[g[y][x]].second = x;
             }
+
             g[ny][nx] = j;
             fyx[j].first = ny;
             fyx[j].second = nx;
@@ -105,7 +106,6 @@ int main()
     ans += gg[0][0];
     gg[0][0] = 0;
     BT(ans, gg, ffdir, ffyx);
-
     cout << ans << "\n";
 
     return 0;
