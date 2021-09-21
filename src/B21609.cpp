@@ -1,103 +1,111 @@
 #include <bits/stdc++.h>
-#define fori for (int i = 1; i <= 20; i++)
-#define forj for (int j = 1; j <= 20; j++)
 
 using namespace std;
-using pi = pair<int, int>;
-using ti = tuple<pi, int, int>;
 
-const int xx[] = {1, -1, 0, 0};
-const int yy[] = {0, 0, 1, -1};
+typedef pair<int, int> pii;
+typedef vector<int> vi;
+typedef vector<pii> vpii;
 
-int v[22][22];
+int n, m;
+vector<vi> mp;
 
-void rt()
+void rotate()
 {
-    int w[22][22];
-    fori forj w[i][j] = v[j][21 - i];
-    fori forj v[i][j] = w[i][j];
+    auto tmp = mp;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            tmp[n - j - 1][i] = mp[i][j];
+    mp = tmp;
 }
 
-void grv()
+void gravity()
 {
-    fori for (int j = 21; j > 0; j--) if (v[j][i] == -1)
-    {
-        int lst = j - 1;
-        for (int k = j - 1; k > 0; k--)
-        {
-            if (v[k][i] == -1)
+    for (int i = n - 1; i >= 0; i--)
+        for (int j = 0; j < n; j++)
+            if (mp[i][j] >= 0)
             {
-                j = k + 1;
-                break;
+                int c = i;
+                while (c < n - 1)
+                    if (mp[c + 1][j] != -2)
+                        break;
+                    else
+                        ++c;
+                mp[c][j] = mp[i][j];
+                if (c != i)
+                    mp[i][j] = -2;
             }
-            if (v[k][i] >= 0)
-                swap(v[k][i], v[lst][i]), lst--;
+}
+
+pii bfs(vector<vi> &vis, int i, int j, int remove = 0)
+{
+    pii ret = {1, 0};
+    vector<vi> rainbow_vis(n, vi(n));
+    queue<pii> q;
+    q.push({i, j});
+    vis[i][j] = 1;
+    while (!q.empty())
+    {
+        auto f = q.front();
+        q.pop();
+        for (const auto &[dx, dy] : vpii{
+                 {-1, 0},
+                 {1, 0},
+                 {0, -1},
+                 {0, 1}})
+        {
+            int x = f.first + dx, y = f.second + dy;
+            if (x < 0 || y < 0 || x >= n || y >= n || vis[x][y] || rainbow_vis[x][y] || mp[x][y] < 0)
+                continue;
+            if (!mp[x][y])
+                rainbow_vis[x][y] = 1, ++ret.second;
+            else if (mp[x][y] == mp[i][j])
+                vis[x][y] = 1, q.push({x, y});
+            else
+                continue;
+            ++ret.first;
+            q.push({x, y});
+            if (remove)
+                mp[x][y] = -2;
         }
     }
-}
-
-pi operator+(pi p1, pi p2)
-{
-    return pi(p1.first + p2.first, p1.second + p2.second);
-}
-
-int vis[22][22];
-pi dfs(int x, int y, int z, bool b = false)
-{
-    if (b)
-        v[x][y] = -2;
-    vis[x][y] = 1;
-    pi r(1, v[x][y] == 0 ? 1 : 0);
-    for (int i = 0; i < 4; i++)
-    {
-        int x_ = x + xx[i], y_ = y + yy[i];
-        if (!vis[x_][y_] && (v[x_][y_] == 0 || v[x_][y_] == z))
-            r = r + dfs(x_, y_, z, b);
-    }
-    return r;
-}
-
-void clear()
-{
-    fori forj if (v[i][j] == 0) vis[i][j] = 0;
-}
-
-int get()
-{
-    ti r(pi(0, 0), 1, 1);
-    memset(vis, 0, sizeof(vis));
-    fori forj if (v[i][j] > 0) clear(), r = max(r, ti(dfs(i, j, v[i][j]), i, j));
-    memset(vis, 0, sizeof(vis));
-    auto [d, x, y] = r;
-    if (d.first)
-        dfs(x, y, v[x][y], true);
-    return d.first;
+    if (remove)
+        mp[i][j] = -2;
+    return ret;
 }
 
 int main()
 {
-    cin.tie(0)->sync_with_stdio(0);
-
-    memset(v, -1, sizeof(v));
-
-    int n, m;
     cin >> n >> m;
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= n; j++)
-            cin >> v[i][j];
+    mp.assign(n, vi(n));
 
-    int a = 0;
+    for (auto &v : mp)
+        for (auto &i : v)
+            cin >> i;
+
+    int ans = 0;
     while (1)
     {
-        int d = get();
-        if (d < 2)
+        pii sz, xy;
+        vector<vi> vis(n, vi(n));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+            {
+                if (vis[i][j] || mp[i][j] <= 0)
+                    continue;
+                pii ret = bfs(vis, i, j);
+                if (ret.first > sz.first)
+                    sz = ret, xy = {i, j};
+                else if (ret.first == sz.first && ret.second >= sz.second)
+                    sz.second = ret.second, xy = {i, j};
+            }
+        if (sz.first <= 1)
             break;
-        a += d * d;
-        grv();
-        rt();
-        grv();
+        vis.assign(n, vi(n));
+        bfs(vis, xy.first, xy.second, true);
+        gravity();
+        rotate();
+        gravity();
+        ans += pow(sz.first, 2);
     }
-    cout << a << '\n';
-
-    return 0;
+    cout << ans;
 }
