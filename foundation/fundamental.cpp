@@ -289,7 +289,7 @@ int main()
     if (aut == v.end())
         cout << "10 not found" << endl;
     cout << "unfound *aut  " << *aut << "   v.size()  " << v.size() << endl;
-    fill(v.begin(), v.end(), 10);
+    (v.begin(), v.end(), 10);
     v.push_back(100);
     for (int i : v)
         cout << i << "  ";
