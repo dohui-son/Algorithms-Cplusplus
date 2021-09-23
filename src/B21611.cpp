@@ -1,152 +1,130 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+int N, M, d, s, idx[50][50], n, ans;
+int dr[4] = {0, -1, 1, 0};
+int dc[4] = {1, 0, 0, -1};
 
-int n, m, shy, shx;
-uint64_t ans;
-const int dy[] = {-1, 1, 0, 0};
-const int dx[] = {0, 0, -1, 1};
-const int yy[] = {1, 0, -1, 0};
-const int xx[] = {0, 1, 0, -1};
-vector<vector<int> > g;
-vector<pair<int, int> > magic;
-string str, str2;
-int cnt = 0;
-char pre;
-
-void bomb()
+typedef struct Line
 {
-    cnt = 0;
-    pre = '\0';
-    for (int i = 0; i < str.size(); i++)
+    int arr[2500];
+} Line;
+Line map, next, init;
+
+void numbering(int r, int c)
+{
+    idx[r][c] = n++;
+}
+
+void indexing()
+{
+    numbering(N / 2, N / 2);
+    for (int i = N / 2; i >= 0; i--)
     {
-        if (pre != str[i] && cnt < 4)
+        int e = N - 1 - i;
+
+        for (int j = i + 1; j <= e; j++)
+            numbering(j, i);
+        for (int j = i + 1; j <= e; j++)
+            numbering(e, j);
+        for (int j = e - 1; j >= i; j--)
+            numbering(j, e);
+        for (int j = e - 1; j >= i; j--)
+            numbering(i, j);
+    }
+}
+
+void blizzard()
+{
+    int r = N / 2;
+    int c = N / 2;
+
+    for (int i = 1; i <= s; i++)
+    {
+        int rr = r + i * dr[d];
+        int cc = c + i * dc[d];
+
+        map.arr[idx[rr][cc]] = 0;
+    }
+
+    next = init;
+    int cur = 1;
+    for (int i = 1; i < n; i++)
+    { //n=N*N
+        if (map.arr[i])
+            next.arr[cur++] = map.arr[i];
+    }
+    map = next;
+}
+
+int bomb()
+{
+    int flag = 0, lb = 1, ub = 1, cur = 1;
+    next = init;
+
+    for (int i = 2; i < n; i++)
+    {
+        if (map.arr[i] != map.arr[i - 1])
         {
-            cnt = 1;
-            pre = str[i];
-            str2.push_back(str[i]);
-        }
-        else if (pre != str[i] && cnt >= 4)
-        {
-            ans += pre * cnt;
-            str = str.substr(0, str.size() - cnt);
-            if (str.empty())
-                return;
-            pre = str.back();
-            cnt = 0;
-            for (int i = str.size() - 1; i >= 0; i--)
+            ub = i - 1;
+
+            if (ub - lb + 1 >= 4)
             {
-                if (str[i] == pre)
-                    cnt++;
-                else
-                    break;
+                flag = 1;
+                ans += map.arr[ub] * (ub - lb + 1);
             }
-        }
-    }
-}
-
-void putin(int input)
-{
-    char c = input + '0';
-    if (str.empty())
-    {
-        pre = c;
-        cnt = 1;
-        str.push_back(input);
-    }
-    else if (c == pre)
-    {
-        cnt++;
-    }
-    else if (c != pre && cnt >= 4)
-    {
-        ans += pre * cnt;
-        str = str.substr(0, str.size() - cnt);
-        if (str.empty())
-            return;
-        pre = str.back();
-        cnt = 0;
-        for (int i = str.size() - 1; i >= 0; i--)
-        {
-            if (str[i] == pre)
-                cnt++;
             else
+            {
+                for (int j = lb; j <= ub; j++)
+                    next.arr[cur++] = map.arr[j];
+            }
+
+            if (!map.arr[i])
                 break;
+            lb = i;
         }
     }
-    else if (c != pre && cnt < 4)
-    {
-        pre = c;
-        cnt = 1;
-    }
-    return;
+
+    map = next;
+    return flag;
 }
 
-void dfs(int y, int x, int kan, int kdx, int dir)
+void rearrange()
 {
-    if (y == 0 && x == 0)
-    {
-        putin(g[y][x]);
-        return;
-    }
-    if (kan == 0)
-    {
-        dfs(y, x, kdx / 2 + 1, kdx + 1, (dir + 1) % 4);
-        return;
-    }
-    if (g[y][x] != 0)
-        putin(g[y][x]);
-    dfs(y + yy[dir], x + xx[dir], kan - 1, kdx, dir);
-    return;
-}
+    int lb = 1, ub = 1, cur = 1;
+    next = init;
 
-void magician(int idx)
-{
-    for (int i = 1; i <= magic[idx].second; i++)
+    for (int i = 2; i < n; i++)
     {
-        int ny = shy + dy[magic[idx].first] * i;
-        int nx = shx + dx[magic[idx].first] * i;
-        if (ny < 0 || nx < 0 || ny >= n || nx >= n)
-            continue;
-        g[ny][nx] = 0;
+        if (map.arr[i] != map.arr[i - 1])
+        {
+            ub = i - 1;
+            next.arr[cur++] = ub - lb + 1;
+            if (cur >= n)
+                break;
+            next.arr[cur++] = map.arr[ub];
+            if (!map.arr[i] || cur >= n)
+                break;
+            lb = i;
+        }
     }
+    map = next;
 }
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    cin >> n >> m;
-    shy = shx = n / 2;
-    g.assign(n, vector<int>(n));
-
-    for (int i = 0; i < n; i++)
+    scanf(" %d %d", &N, &M);
+    indexing();
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            scanf(" %d", &map.arr[idx[i][j]]);
+    for (int t = 0; t < M; t++)
     {
-        for (int j = 0; j < n; j++)
-        {
-            cin >> g[i][j];
-        }
+        scanf(" %d %d", &d, &s);
+        d %= 4;
+        blizzard();
+        while (bomb())
+            ;
+        rearrange();
     }
-    int d = 0, dis = 0;
-    for (int i = 0; i < m; i++)
-    {
-        cin >> d >> dis;
-        magic.push_back({--d, dis});
-    }
-    for (int k = 0; k < m; k++)
-    {
-        magician(k);
-        str.clear();
-        cnt = 0;
-        pre = '\0';
-        dfs(shy, shx - 1, 1, 1, 0); //void dfs(int y, int x, int kan, int kdx, int dir)
-        str2.clear();
-        while (1)
-            if (bomb())
-                break; //bomb가 더 터질 것 없으면 true;
-
-        //refill();
-    }
-
+    printf("%d", ans);
     return 0;
 }
