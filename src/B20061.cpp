@@ -1,5 +1,4 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
 int N, ans, dy[4] = {0, 0, 1, 0}, dx[4] = {0, 0, 0, 1};
 int board[2][10][4];
 void move(int t, int x, int y, int c)
