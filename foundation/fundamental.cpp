@@ -9,6 +9,8 @@
 #include <set>
 #include <stack>
 #include <queue>
+#include <sstream>
+
 //부동소수점(실수)이기 때문에 == 연산자체가 안먹혀서,>이거로 해야함
 using namespace std;
 #define endl "\n"
@@ -126,6 +128,26 @@ int main()
     // }
     vector<pair<int, int> > vect_p;
     sort(vect_p.begin(), vect_p.end(), compare2);
+
+    string splitt = "java c c++ python";
+    istringstream ss(splitt); //#include<sstream>
+    string stringBuffer;
+    vector<string> strvect;
+    strvect.clear();
+    cout << "어떻게 잘리는지 확인해봅시다 ->";
+    //구분자가 , 이라면 getline(ss, stringBuffer, ',')쓰면됨
+    while (getline(ss, stringBuffer, ' '))
+    {
+        strvect.push_back(stringBuffer);
+        cout << stringBuffer << " ";
+    }
+
+    cout << endl
+         << "vector 값을 출력해보자." << endl;
+    for (int i = 0; i < strvect.size(); i++)
+    {
+        cout << strvect[i] << endl;
+    }
 
     char s[50] = {
         0,
