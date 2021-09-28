@@ -1,34 +1,95 @@
-#include <bits/stdc++.h>
-using namespace std;
-const int INF = 987654321;
-int T, t, n, m, s, g, h, a, b, d, x, dist[50001];
-vector<int> visited;
+// //<1>dijkstra 한번
+// // a에서 b로의 최단거리를 d(a,b)라고 합시다.
+// // 간선 gh를 사용한 최단경로가 존재한다면, d(s,g) + d(g,h) + d(h,t) = d(s,t)일 것입니다.
+// // 간선 hg를 사용한 최단경로가 존재한다면, d(s,h) + d(h,g) + d(g,t) = d(s,t)일 것입니다.
+// // 그러므로 s, g, h에서 다익스트라 알고리즘을 한 번씩 돌려 준 뒤, 각 후보지 t가 두 식 중 적어도 하나를 만족하는지 보면 됩니다.
+// //<2>dijkstra 두번
+// // 모든 간선의 비용을 두 배로 늘린 뒤, 점선의 비용을 1 줄입니다.
+// // 그 상태에서 다익스트라를 돌려 준 뒤, 각 후보지의 최단거리가 홀수인지 보는 것도 좋습니다.
+// #include <bits/stdc++.h>
+// #define INF 0x7fffffff - 1
+// using namespace std;
+// priority_queue<pair<int, int>,vector<pair<int,int>>,greater<pair<int,int>> > pq;
+// int T, t, n, m, s, h, g, a, b, d, tmp, cur, graph[2001][2001], goal[2001], dist[2001];
+// int main()
+// {
+//     scanf("%d", &T);
+//     while (T--)
+//     {
+//         for (int i = 1; i <= n; i++)
+//         {
+//             goal[i] = 0;
+//             dist[i] = 0;
+//             for (int j = 1; j <= n; j++)
+//                 graph[i][j] = 0;
+//         }
+//         scanf("%d%d%d%d%d%d", &n, &m, &t, &s, &g, &h);
+//         while (m--)
+//         {
+//             scanf("%d%d%d", &a, &b, &d);
+//             if ((a == g && b == h) || (a == h && b == g))
+//                 graph[a][b] = graph[b][a] = 2 * d - 1;
+//             else
+//                 graph[a][b] = graph[b][a] = 2 * d;
+//         }
+//         while (t--)
+//         {
+//             scanf("%d", &tmp);
+//             goal[tmp] = 1;
+//         }
+//         for (int i = 1; i <= n; i++)
+//             dist[i] = INF;
+//         pq.push({0, s});
+//         dist[s] = 0;
+//         while (!pq.empty())
+//         {
+//             int distance = pq.top().first;
+//             int cur = pq.top().second;
+//             pq.pop();
+//             if (distance > dist[cur])
+//                 continue;
+//             for (int i = 1; i <= n; i++)
+//             {
+//                 if ((dist[i] > dist[cur] + graph[i][cur]) && graph[i][cur])
+//                 {
+//                     dist[i] = dist[cur] + graph[i][cur];
+//                     pq.push({dist[i], i});
+//                 }
+//             }
+//         }
+//         for (int i = 1; i <= n; i++)
+//             if (goal[i] && (dist[i] % 2))
+//                 printf("%d ", i);
+//         printf("\n");
+//     }
+// }
 
-void dijk(vector<pair<int, int> > adj[2001], vector<uint64_t> &visited)
+#include <bits/stdc++.h> //맞음
+using namespace std;
+#define INF 0x7fffffff - 1
+int T, n, m, t, s, gg, h, a, b, d, x;
+int dist[2001];
+vector<int> hoobo;
+vector<vector<int> > g;
+priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+void dijik()
 {
-    fill(&dist[0], &dist[0] + 50001, INF);
-    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
-    pq.push({0, s});
-    visited[s] = (1 << s);
+    fill(&dist[0], &dist[0] + 2001, INF);
     dist[s] = 0;
+    pq.push({0, s});
     while (pq.size())
     {
-        int now_d = pq.top().first;
+        int dis = pq.top().first;
         int here = pq.top().second;
-        visited[here] |= (1 << here);
         pq.pop();
-        if (dist[here] != now_d)
+        if (dist[here] < dis)
             continue;
-        for (pair<int, int> next_ : adj[here])
+        for (int i = 1; i < n + 1; i++)
         {
-            int dis = next_.first;
-            int there = next_.second;
-            if (dist[there] > dist[here] + dis)
+            if (g[i][here] && (dist[i] > dist[here] + g[i][here]))
             {
-                visited[there] |= visited[here];
-
-                dist[there] = dist[here] + dis;
-                pq.push({dist[there], there});
+                dist[i] = dist[here] + g[i][here];
+                pq.push({dist[i], i});
             }
         }
     }
@@ -42,77 +103,37 @@ int main()
     cin >> T;
     while (T--)
     {
-        cin >> n >> m >> t;
-        vector<pair<int, int> > adj[2001];
-
-        cin >> s >> g >> h;
-        for (int i = 1; i <= m; i++)
+        cin >> n >> m >> t >> s >> gg >> h;
+        g = vector<vector<int> >(n + 1, vector<int>(n + 1, 0));
+        for (int i = 0; i < m; i++)
         {
             cin >> a >> b >> d;
-            adj[a].push_back({d, b});
-            adj[b].push_back({d, a});
+            if ((a == h && b == gg) || (a == gg && b == h))
+            {
+                g[a][b] = g[b][a] = 2 * d - 1;
+            }
+            else
+            {
+                g[a][b] = 2 * d;
+                g[b][a] = 2 * d;
+            }
         }
-        vector<int> hoobo;
         for (int i = 0; i < t; i++)
         {
             cin >> x;
             hoobo.push_back(x);
         }
+        dijik();
+
         sort(hoobo.begin(), hoobo.end());
-        vector<uint64_t> visited(n + 1, 0);
-        dijk(adj, visited);
-        for (int ho : hoobo)
+        for (int i = 0; i < t; i++)
         {
-            if (visited[ho] & (1 << g) && visited[ho] & (1 << h) && dist[ho] != INF)
-                cout << ho << " ";
+            if (dist[hoobo[i]] != INF && (dist[hoobo[i]] % 2))
+                cout << hoobo[i] << " ";
         }
         cout << "\n";
-        visited.clear();
+        hoobo.clear();
+        g.clear();
     }
-
     return 0;
 }
-
-//숏코딩
-// #include <bits/stdc++.h>
-// #define INF 0x7fffffff-1
-// using namespace std;
-// priority_queue<pair<int,int> >pq;
-// int T,t,n,m,s,h,g,a,b,d,tmp,cur,graph[2001][2001],goal[2001],dist[2001];
-// int main(){
-// 	scanf("%d",&T);
-// 	while(T--){
-// 		for(int i=1;i<=n;i++) {
-// 			goal[i]=0;
-// 			dist[i]=0;
-// 			for(int j=1;j<=n;j++) graph[i][j]=0;
-// 		}
-// 		scanf("%d%d%d%d%d%d",&n,&m,&t,&s,&g,&h);
-// 		while(m--){
-// 			scanf("%d%d%d",&a,&b,&d);
-// 			if((a==g&&b==h)||(a==h&&b==g)) graph[a][b]=graph[b][a]=2*d-1;
-// 			else graph[a][b]=graph[b][a]=2*d;
-// 		}
-// 		while(t--){
-// 			scanf("%d",&tmp);
-// 			goal[tmp]=1;
-// 		}
-// 		for(int i=1;i<=n;i++) dist[i]=INF;
-// 		pq.push({0,s});
-// 		dist[s]=0;
-// 		while(!pq.empty()){
-// 			int distance=-pq.top().first;
-// 			int cur=pq.top().second;
-// 			pq.pop();
-// 			if(distance>dist[cur])continue;
-// 			for(int i=1;i<=n;i++){
-// 				if((dist[i]>dist[cur]+graph[i][cur])&&graph[i][cur]){
-// 					dist[i]=dist[cur]+graph[i][cur];
-// 					pq.push({-dist[i],i});
-// 				}
-// 			}
-// 		}
-// 		for(int i=1;i<=n;i++) if(goal[i]&&(dist[i]%2)) printf("%d ",i);
-// 		printf("\n");
-// 	}
-// }
