@@ -37,12 +37,18 @@ def sol():
                     print(now[4])
                     return
                 if btx == rtx and bty == rty:
-                    if rcnt > bcnt:
+                    if rcnt >= bcnt:
                         rtx -= d[0]
                         rty -= d[1]
                     else:
                         btx -= d[0]
                         bty -= d[1]
+                    # if rcnt > bcnt:
+                    #     rtx -= d[0]
+                    #     rty -= d[1]
+                    # else:
+                    #     btx -= d[0]
+                    #     bty -= d[1]
                 if (rtx, rty, btx, bty) in visited:
                     continue
                 visited[(rtx, rty, btx, bty)] = 1
